@@ -1,0 +1,8 @@
+# System Files
+
+# macOS
+.DS_Store
+*.icloud
+
+# Windows
+*.lnk
