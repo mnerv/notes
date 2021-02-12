@@ -15,3 +15,7 @@
   - [boost.beast](https://github.com/boostorg/beast)
   - [uWebSockets](https://github.com/uNetworking/uWebSockets)
   - [websocketpp](https://github.com/zaphoyd/websocketpp)
+
+## Misc
+
+  - [stb](https://github.com/nothings/stb)
