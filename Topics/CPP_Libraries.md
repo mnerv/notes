@@ -9,3 +9,9 @@
   - [Blitz++](https://en.wikipedia.org/wiki/Blitz%2B%2B)
   - [Armadillo](https://en.wikipedia.org/wiki/Armadillo_(C%2B%2B_library))
   - [Eigen](https://en.wikipedia.org/wiki/Eigen_(C%2B%2B_library))
+
+## Websockets
+
+  - [boost.beast](https://github.com/boostorg/beast)
+  - [uWebSockets](https://github.com/uNetworking/uWebSockets)
+  - [websocketpp](https://github.com/zaphoyd/websocketpp)
