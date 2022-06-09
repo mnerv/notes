@@ -146,7 +146,7 @@ constexpr auto length_of(T (&amp;)[N]) -&gt; std::size_t {
 <pre><code class="language-cpp">#define length_of(x) sizeof(x) / sizeof(x[0])
 </code></pre>
 <p>Usage:</p>
-<pre><code>std::int32_t arr[] = {1, 2, 3, 4};
+<pre><code class="language-cpp">std::int32_t arr[] = {1, 2, 3, 4};
 
 length_of(arr);  // 4
 </code></pre>
