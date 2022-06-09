@@ -4,3 +4,8 @@ language = "en"
 multilingual = false
 src = "src"
 title = "notes"
+
+[output.html]
+git-repository-url = "https://github.com/mnerv/notes"
+edit-url-template = "https://github.com/mnerv/notes/edit/trunk/{path}"
+
