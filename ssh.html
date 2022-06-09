@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Home - notes</title>
+        <title>ssh - notes</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="home.html" class="active"><strong aria-hidden="true">1.</strong> Home</a></li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">2.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">3.</strong> ssh</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="home.html"><strong aria-hidden="true">1.</strong> Home</a></li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">2.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="ssh.html" class="active"><strong aria-hidden="true">3.</strong> ssh</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,15 +134,77 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="notes-over-the-years"><a class="header" href="#notes-over-the-years">notes over the years</a></h1>
-<p>This is a collection of code snippets and other kind of notes over the years.</p>
+                        <h1 id="ssh"><a class="header" href="#ssh">ssh</a></h1>
+<p>Quick and simple SSH guide setup.</p>
+<h2 id="keys"><a class="header" href="#keys">Keys</a></h2>
+<h3 id="generate-private-and-public-keys"><a class="header" href="#generate-private-and-public-keys">Generate private and public keys</a></h3>
+<p>Generate ssh keys using <code>rsa</code> algorithm with <code>4096</code> bits. This will generate the
+keys at the <code>~/.ssh/</code> directory. For more info check <a href="https://wiki.archlinux.org/index.php/SSH_keys">arch
+wiki</a>.</p>
+<pre><code class="language-sh">ssh-keygen -t rsa -b 4096
+</code></pre>
+<h3 id="copy-over-ssh-keys"><a class="header" href="#copy-over-ssh-keys">Copy over ssh keys</a></h3>
+<h4 id="using-ssh-copy-id"><a class="header" href="#using-ssh-copy-id">Using ssh-copy-id</a></h4>
+<p>To copy over ssh public key use the following commannd, replace <code>user</code> with the
+user you're trying to login to and <code>hostname</code> with the hostname of the machine,
+example: <code>miku@127.0.0.1</code>.</p>
+<pre><code class="language-sh">ssh-copy-id user@hostname
+</code></pre>
+<h4 id="manually-copying-over"><a class="header" href="#manually-copying-over">Manually copying over</a></h4>
+<p>To manually copy over the ssh public key, cat the public key with this command.
+Select the output content and copy.</p>
+<pre><code class="language-sh">cat ~/.ssh/id_rsa.pub
+</code></pre>
+<p><code>ssh</code> into the other machine and create/edit the <code>authorized_keys</code> file in the
+<code>~/.ssh/</code> directory. Append the output from the previous instruction into the
+<code>authorized_keys</code> file and save.</p>
+<h2 id="connect"><a class="header" href="#connect">Connect</a></h2>
+<p>With keys generated and public key transfered to the machine you're trying to
+the other machine the login process can be login without password with</p>
+<pre><code>ssh &lt;user&gt;@&lt;hostname&gt;
+</code></pre>
+<h2 id="forwarding-port-using-ssh"><a class="header" href="#forwarding-port-using-ssh">Forwarding port using SSH</a></h2>
+<p>Bind <code>local</code> port to <code>remote</code> port using ssh as the tunnel. <a href="https://wiki.archlinux.org/index.php/OpenSSH#Forwarding_other_ports">Read
+more</a>.</p>
+<pre><code>ssh -L local-port:127.0.0.1:remote-port user@hostname -N
+</code></pre>
+<h2 id="config"><a class="header" href="#config">Config</a></h2>
+<p>We can use config to have a short name when ssh to another host. In the
+<code>~/.ssh/</code> directory create/edit the file with the name <code>config</code>. The syntax will
+look like this</p>
+<pre><code>Host &lt;some_name&gt;
+    HostName &lt;hostname&gt;
+    User &lt;username&gt;
+    Port &lt;ssh_port&gt;
+</code></pre>
+<p><code>&lt;some_name&gt;</code>: This is the name you're using later when sshing into the machine.
+This can be anything.</p>
+<p><code>&lt;username&gt;</code>: The user you're trying to connect as.</p>
+<p><code>&lt;ssh_port&gt;</code>: The port ssh you're trying to ssh into. This can be removed and
+it'll use the default port <code>22</code>.</p>
+<p>Example config</p>
+<pre><code>Host helloworld
+    Hostname example.com
+    User miku
+    Port 22
+</code></pre>
+<p>We can just run ssh like this</p>
+<pre><code>ssh helloworld
+</code></pre>
+<h2 id="file-transfer"><a class="header" href="#file-transfer">File Transfer</a></h2>
+<h3 id="rsync"><a class="header" href="#rsync">rsync</a></h3>
+<pre><code class="language-shell">rsync -rvP &lt;source&gt; &lt;destination&gt;
+</code></pre>
+<h3 id="scp"><a class="header" href="#scp">scp</a></h3>
+<pre><code>scp &lt;sourc&gt; &lt;destination&gt;
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="next" href="cpp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="prev" href="cpp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -150,8 +212,8 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="next" href="cpp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="prev" href="cpp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
                     </a>
             </nav>
 
