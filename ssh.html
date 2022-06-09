@@ -191,6 +191,15 @@ it'll use the default port <code>22</code>.</p>
 <p>We can just run ssh like this</p>
 <pre><code>ssh helloworld
 </code></pre>
+<h2 id="security"><a class="header" href="#security">Security</a></h2>
+<p>For better security it is recommended that the password login is disabled. To
+disable password login edit the file <code>/etc/ssh/sshd_config</code> file, find/add
+<code>PasswordAuthentication</code> and set the value to <code>no</code>.</p>
+<pre><code>PasswordAuthentication no
+</code></pre>
+<p>Disable <code>root</code> login is also a good idea.</p>
+<pre><code>PermitRootLogin no
+</code></pre>
 <h2 id="file-transfer"><a class="header" href="#file-transfer">File Transfer</a></h2>
 <h3 id="rsync"><a class="header" href="#rsync">rsync</a></h3>
 <pre><code class="language-shell">rsync -rvP &lt;source&gt; &lt;destination&gt;
