@@ -93,6 +93,22 @@ We can just run ssh like this
 ssh helloworld
 ```
 
+## Security
+
+For better security it is recommended that the password login is disabled. To
+disable password login edit the file `/etc/ssh/sshd_config` file, find/add
+`PasswordAuthentication` and set the value to `no`.
+
+```
+PasswordAuthentication no
+```
+
+Disable `root` login is also a good idea.
+
+```
+PermitRootLogin no
+```
+
 ## File Transfer
 
 ### rsync
