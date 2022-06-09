@@ -18,7 +18,8 @@ This code is equivalent to making a macro to get the length of C style array.
 ```
 
 Usage:
-```
+
+```cpp
 std::int32_t arr[] = {1, 2, 3, 4};
 
 length_of(arr);  // 4
