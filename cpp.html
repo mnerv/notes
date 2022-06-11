@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="home.html"><strong aria-hidden="true">1.</strong> Home</a></li><li class="chapter-item expanded "><a href="cpp.html" class="active"><strong aria-hidden="true">2.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">3.</strong> ssh</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html" class="active"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -180,12 +180,28 @@ auto curry(callable f, params... ps) {
 auto crr = curry(fn, 1);
 crr(2);  // 3
 </code></pre>
+<h2 id="read-text-into-stdstring"><a class="header" href="#read-text-into-stdstring">Read text into std::string</a></h2>
+<p>This will read the whole text file into memory which is not ideal if the file is
+really large.</p>
+<pre><code class="language-cpp">#include &lt;fstream&gt;
+#include &lt;ios&gt;
+</code></pre>
+<pre><code class="language-cpp">auto read_text(std::string const&amp; filename) -&gt; std::string {
+    std::ifstream input{filename, std::ios::in};
+    if (!input.is_open() || input.fail())
+        throw std::runtime_error(&quot;ERROR: Loading textfile!&quot;);
+    return {
+        std::istreambuf_iterator&lt;char&gt;(input),
+        std::istreambuf_iterator&lt;char&gt;()
+    };
+}
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="home.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                             <a rel="next" href="ssh.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
@@ -197,7 +213,7 @@ crr(2);  // 3
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="home.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     <a rel="next" href="ssh.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">

@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="home.html"><strong aria-hidden="true">1.</strong> Home</a></li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">2.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">3.</strong> ssh</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -180,6 +180,22 @@ auto curry(callable f, params... ps) {
 auto crr = curry(fn, 1);
 crr(2);  // 3
 </code></pre>
+<h2 id="read-text-into-stdstring"><a class="header" href="#read-text-into-stdstring">Read text into std::string</a></h2>
+<p>This will read the whole text file into memory which is not ideal if the file is
+really large.</p>
+<pre><code class="language-cpp">#include &lt;fstream&gt;
+#include &lt;ios&gt;
+</code></pre>
+<pre><code class="language-cpp">auto read_text(std::string const&amp; filename) -&gt; std::string {
+    std::ifstream input{filename, std::ios::in};
+    if (!input.is_open() || input.fail())
+        throw std::runtime_error(&quot;ERROR: Loading textfile!&quot;);
+    return {
+        std::istreambuf_iterator&lt;char&gt;(input),
+        std::istreambuf_iterator&lt;char&gt;()
+    };
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ssh"><a class="header" href="#ssh">ssh</a></h1>
 <p>Quick and simple SSH guide setup.</p>
 <h2 id="keys"><a class="header" href="#keys">Keys</a></h2>
@@ -252,6 +268,66 @@ disable password login edit the file <code>/etc/ssh/sshd_config</code> file, fin
 </code></pre>
 <h3 id="scp"><a class="header" href="#scp">scp</a></h3>
 <pre><code>scp &lt;sourc&gt; &lt;destination&gt;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="server"><a class="header" href="#server">Server</a></h1>
+<p>Server related guides for hosting, TSL, setup proxy with web servers and other.</p>
+<p>The following sections provide in-depth guide.</p>
+<ul>
+<li><a href="server/./apache.html">apache</a></li>
+<li><a href="server/./certbot.html">certbot</a></li>
+<li><a href="server/./nginx.html">nginx</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="apache"><a class="header" href="#apache">apache</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="certbot"><a class="header" href="#certbot">certbot</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="nginx"><a class="header" href="#nginx">nginx</a></h1>
+<p>Setup simple nginx web server.</p>
+<h2 id="debian"><a class="header" href="#debian">Debian</a></h2>
+<h3 id="step-1---installation"><a class="header" href="#step-1---installation">Step 1 - Installation</a></h3>
+<p>Update package index.</p>
+<pre><code>sudo apt update
+</code></pre>
+<p>Install <code>nginx</code></p>
+<pre><code>sudo apt install nginx
+</code></pre>
+<h3 id="step-2---setup-firewall"><a class="header" href="#step-2---setup-firewall">Step 2 - Setup Firewall</a></h3>
+<p>List application configuration with <code>ufw</code></p>
+<pre><code>sudo ufw app list
+</code></pre>
+<p>Enable nginx on port <code>80</code></p>
+<pre><code>sudo ufw allow 'Nginx HTTP'
+</code></pre>
+<p>Check the firewall status</p>
+<pre><code>sudo ufw status
+</code></pre>
+<h3 id="step-3---check-web-server"><a class="header" href="#step-3---check-web-server">Step 3 - Check web server</a></h3>
+<p>Check with <code>systemd</code> if the service is running</p>
+<pre><code>systemctl status nginx
+</code></pre>
+<h2 id="some-nginx-commands"><a class="header" href="#some-nginx-commands">Some nginx commands</a></h2>
+<p>Test the config file</p>
+<pre><code>nginx -t
+</code></pre>
+<p>Reload the service with the new config file</p>
+<pre><code>nginx -s reload
+</code></pre>
+<h2 id="configure"><a class="header" href="#configure">Configure</a></h2>
+<p>To add new site to nginx add a new file in <code>/etc/nginx/sites-available</code></p>
+<pre><code>/etc/nginx/sites-available
+</code></pre>
+<p>There should a <code>default</code> site already there which can be use as base.</p>
+<pre><code class="language-nginx">server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
 </code></pre>
 
                     </main>
