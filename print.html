@@ -279,7 +279,46 @@ disable password login edit the file <code>/etc/ssh/sshd_config</code> file, fin
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apache"><a class="header" href="#apache">apache</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="certbot"><a class="header" href="#certbot">certbot</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="nginx"><a class="header" href="#nginx">nginx</a></h1>
+<p><a href="https://certbot.eff.org">certbot</a> is a tool to get free TLS encryption for your
+websites. To install just follow their instructions on their
+<a href="https://certbot.eff.org">website</a>.</p>
+<p>If your site is already running you can just run <code>certbot</code> command and it'll
+just give you the instruction on their program.</p>
+<p>If you want to add certification first before enabling your site with nginx or
+apache you can run </p>
+<pre><code class="language-sh">sudo certbot certonly -d dev.example.com
+</code></pre>
+<p>Select the your web server and this will later create keys on the system that
+you can use.</p>
+<p>cert: <code>/etc/letsencrypt/live/dev.example.com/fullchain.pem</code>
+key: <code>/etc/letsencrypt/live/dev.example.com/privkey.pem</code></p>
+<h2 id="nginx"><a class="header" href="#nginx">NGINX</a></h2>
+<p>Create nginx config <code>/etc/sites-available/dev.example.com</code></p>
+<pre><code class="language-nginx">server {
+    listen 80;
+    listen [::]:80;
+    server_name dev.example.com;
+    return 301 https://dev.example.com$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    root /var/www/dev.example.com/html;
+    index index.html;
+    server_name dev.example.com;
+
+    location / {
+        try_files $uri $uri/ $uri.html =404;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/dev.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/dev.example.com/privkey.pem;
+}
+</code></pre>
+<p>To enable it you need to symlink it to <code>/etc/nginx/sites-enabled/dev.example.com</code></p>
+<pre><code>sudo ln -s /etc/nginx/sites-available/dev.example.com /etc/nginx/sites-enabled/dev.example.com
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="nginx-1"><a class="header" href="#nginx-1">nginx</a></h1>
 <p>Setup simple nginx web server.</p>
 <h2 id="debian"><a class="header" href="#debian">Debian</a></h2>
 <h3 id="step-1---installation"><a class="header" href="#step-1---installation">Step 1 - Installation</a></h3>
@@ -311,6 +350,11 @@ disable password login edit the file <code>/etc/ssh/sshd_config</code> file, fin
 <pre><code>nginx -s reload
 </code></pre>
 <h2 id="configure"><a class="header" href="#configure">Configure</a></h2>
+<p>The default nginx configuration is setup to include sites under
+<code>/etc/nginx/sites-enabled</code>. In this location the sites is usually symlink from
+<code>/etc/nginx/sites-available</code>. The file that configure this behavior is
+<code>/etc/nginx/nginx.conf</code> at line <code>include /etc/nginx/sites-enabled/*</code>.</p>
+<h3 id="sites"><a class="header" href="#sites">Sites</a></h3>
 <p>To add new site to nginx add a new file in <code>/etc/nginx/sites-available</code></p>
 <pre><code>/etc/nginx/sites-available
 </code></pre>

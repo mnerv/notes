@@ -172,6 +172,11 @@
 <pre><code>nginx -s reload
 </code></pre>
 <h2 id="configure"><a class="header" href="#configure">Configure</a></h2>
+<p>The default nginx configuration is setup to include sites under
+<code>/etc/nginx/sites-enabled</code>. In this location the sites is usually symlink from
+<code>/etc/nginx/sites-available</code>. The file that configure this behavior is
+<code>/etc/nginx/nginx.conf</code> at line <code>include /etc/nginx/sites-enabled/*</code>.</p>
+<h3 id="sites"><a class="header" href="#sites">Sites</a></h3>
 <p>To add new site to nginx add a new file in <code>/etc/nginx/sites-available</code></p>
 <pre><code>/etc/nginx/sites-available
 </code></pre>
