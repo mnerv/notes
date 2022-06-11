@@ -57,3 +57,25 @@ auto crr = curry(fn, 1);
 crr(2);  // 3
 ```
 
+## Read text into std::string
+
+This will read the whole text file into memory which is not ideal if the file is
+really large.
+
+```cpp
+#include <fstream>
+#include <ios>
+```
+
+```cpp
+auto read_text(std::string const& filename) -> std::string {
+    std::ifstream input{filename, std::ios::in};
+    if (!input.is_open() || input.fail())
+        throw std::runtime_error("ERROR: Loading textfile!");
+    return {
+        std::istreambuf_iterator<char>(input),
+        std::istreambuf_iterator<char>()
+    };
+}
+```
+
