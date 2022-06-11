@@ -62,6 +62,13 @@ nginx -s reload
 
 ## Configure
 
+The default nginx configuration is setup to include sites under
+`/etc/nginx/sites-enabled`. In this location the sites is usually symlink from
+`/etc/nginx/sites-available`. The file that configure this behavior is
+`/etc/nginx/nginx.conf` at line `include /etc/nginx/sites-enabled/*`.
+
+### Sites
+
 To add new site to nginx add a new file in `/etc/nginx/sites-available`
 
 ```
