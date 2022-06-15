@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>certbot - notes</title>
+        <title>raspberry pi - notes</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="../cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="../server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="../server/certbot.html" class="active"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="../server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="../raspberrypi/raspberrypi.html"><strong aria-hidden="true">4.</strong> raspberry pi</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="../cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="../server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="../server/certbot.html"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="../server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="../raspberrypi/raspberrypi.html" class="active"><strong aria-hidden="true">4.</strong> raspberry pi</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -113,7 +113,7 @@
                         <a href="https://github.com/mnerv/notes" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/mnerv/notes/edit/trunk/src/server/certbot.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/mnerv/notes/edit/trunk/src/raspberrypi/raspberrypi.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -140,56 +140,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="certbot"><a class="header" href="#certbot">certbot</a></h1>
-<p><a href="https://certbot.eff.org">certbot</a> is a tool to get free TLS encryption for your
-websites. To install just follow their instructions on their
-<a href="https://certbot.eff.org">website</a>.</p>
-<p>If your site is already running you can just run <code>certbot</code> command and it'll
-just give you the instruction on their program.</p>
-<p>If you want to add certification first before enabling your site with nginx or
-apache you can run </p>
-<pre><code class="language-sh">sudo certbot certonly -d dev.example.com
-</code></pre>
-<p>Select the your web server and this will later create keys on the system that
-you can use.</p>
-<p>cert: <code>/etc/letsencrypt/live/dev.example.com/fullchain.pem</code>
-key: <code>/etc/letsencrypt/live/dev.example.com/privkey.pem</code></p>
-<h2 id="nginx"><a class="header" href="#nginx">NGINX</a></h2>
-<p>Create nginx config <code>/etc/sites-available/dev.example.com</code></p>
-<pre><code class="language-nginx">server {
-    listen 80;
-    listen [::]:80;
-    server_name dev.example.com;
-    return 301 https://dev.example.com$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    root /var/www/dev.example.com/html;
-    index index.html;
-    server_name dev.example.com;
-
-    location / {
-        try_files $uri $uri/ $uri.html =404;
-    }
-
-    ssl_certificate /etc/letsencrypt/live/dev.example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/dev.example.com/privkey.pem;
-}
-</code></pre>
-<p>To enable it you need to symlink it to <code>/etc/nginx/sites-enabled/dev.example.com</code></p>
-<pre><code>sudo ln -s /etc/nginx/sites-available/dev.example.com /etc/nginx/sites-enabled/dev.example.com
+                        <h1 id="raspberry-pi-notes"><a class="header" href="#raspberry-pi-notes">Raspberry Pi Notes</a></h1>
+<h2 id="docker"><a class="header" href="#docker">docker</a></h2>
+<p>Add this to <code>cmdline.txt</code> to show memory limit on docker.</p>
+<pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../server/apache.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../server/nginx.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
-                            </a>
-                            <a rel="next" href="../server/nginx.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -197,11 +159,8 @@ server {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../server/apache.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../server/nginx.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a rel="next" href="../server/nginx.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
