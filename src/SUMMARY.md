@@ -14,3 +14,7 @@
     - [certbot](./server/certbot.md)
     - [nginx](./server/nginx.md)
 
+# Notes
+
+  - [raspberry pi](./raspberrypi/raspberrypi.md)
+
