@@ -79,3 +79,19 @@ auto read_text(std::string const& filename) -> std::string {
 }
 ```
 
+## Compile time array precompute values
+
+This uses lambda to precompute values for a fixed array at compile time. Requires `C++17`.
+
+```cpp
+static constexpr auto axis = [] {
+    std::array<double, num_points> a{};
+    for (int i = 0; i < num_points; ++i) {
+        a[i] = static_cast<double>(i);
+    }
+    return a;
+}();
+```
+
+Source: [stackoverflow](https://stackoverflow.com/questions/56383454/initialize-an-stdarray-algorithmically-at-compile-time)
+
