@@ -197,6 +197,17 @@ really large.</p>
     };
 }
 </code></pre>
+<h2 id="compile-time-array-precompute-values"><a class="header" href="#compile-time-array-precompute-values">Compile time array precompute values</a></h2>
+<p>This uses lambda to precompute values for a fixed array at compile time. Requires <code>C++17</code>.</p>
+<pre><code class="language-cpp">static constexpr auto axis = [] {
+    std::array&lt;double, num_points&gt; a{};
+    for (int i = 0; i &lt; num_points; ++i) {
+        a[i] = static_cast&lt;double&gt;(i);
+    }
+    return a;
+}();
+</code></pre>
+<p>Source: <a href="https://stackoverflow.com/questions/56383454/initialize-an-stdarray-algorithmically-at-compile-time">stackoverflow</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ssh"><a class="header" href="#ssh">ssh</a></h1>
 <p>Quick and simple SSH guide setup.</p>
 <h2 id="keys"><a class="header" href="#keys">Keys</a></h2>
