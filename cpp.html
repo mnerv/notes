@@ -206,7 +206,52 @@ really large.</p>
     return a;
 }();
 </code></pre>
-<p>Source: <a href="https://stackoverflow.com/questions/56383454/initialize-an-stdarray-algorithmically-at-compile-time">stackoverflow</a></p>
+<p>source: <a href="https://stackoverflow.com/questions/56383454/initialize-an-stdarray-algorithmically-at-compile-time">stackoverflow</a></p>
+<h2 id="simple-32-bit-unicode-to-utf8-conversion"><a class="header" href="#simple-32-bit-unicode-to-utf8-conversion">Simple 32-bit unicode to utf8 conversion</a></h2>
+<p>This code is only used for learning purpose only, it is simple enough to know what unicode is and what is utf8.</p>
+<pre><code class="language-cpp">constexpr std::size_t UTF8_SIZE = 4;  // byte
+void code2utf8(std::uint32_t const&amp; code, std::array&lt;std::uint8_t, UTF8_SIZE&gt;&amp; codes) {
+    // Leading sequence for different byte size
+    constexpr std::uint8_t LEAD_1BYTE = 0b00000000;  // 0x00
+    constexpr std::uint8_t LEAD_2BYTE = 0b11000000;  // 0xC0
+    constexpr std::uint8_t LEAD_3BYTE = 0b11100000;  // 0xE0
+    constexpr std::uint8_t LEAD_4BYTE = 0b11110000;  // 0xF0
+    constexpr std::uint8_t LEAD_REST  = 0b10000000;  // 0x80
+
+    // Max character count for different byte size
+    constexpr std::uint32_t MAX_CHAR_1BYTE = 0x0000007F;  // MAX 127     CHARACTERS WITH 1 BYTE
+    constexpr std::uint32_t MAX_CHAR_2BYTE = 0x00000800;  // MAX 2048    CHARACTERS WITH 2 BYTE
+    constexpr std::uint32_t MAX_CHAR_3BYTE = 0x00010000;  // MAX 65536   CHARACTERS WITH 3 BYTE
+    constexpr std::uint32_t MAX_CHAR_4BYTE = 0x00200000;  // MAX 2097152 CHARACTERS WITH 4 BYTE
+
+    constexpr std::uint8_t FILTER_1BYTE    = 0b01111111;
+    constexpr std::uint8_t FILTER_2BYTE    = 0b00011111;
+    constexpr std::uint8_t FILTER_3BYTE    = 0b00001111;
+    constexpr std::uint8_t FILTER_4BYTE    = 0b00000111;
+    constexpr std::uint8_t FILTER_REST     = 0b00111111;
+
+    // Initialise the element with zero
+    codes[0] = codes[1] = codes[2] = codes[3] = 0x00;
+
+    if (code &lt;= MAX_CHAR_1BYTE) {
+        codes[3] = LEAD_1BYTE | (FILTER_1BYTE &amp; code);
+    } else if (code &lt;= MAX_CHAR_2BYTE) {
+        codes[2] = LEAD_2BYTE | (FILTER_2BYTE &amp; (code &gt;&gt; 6));
+        codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
+    } else if (code &lt;= MAX_CHAR_3BYTE) {
+        codes[1] = LEAD_3BYTE | (FILTER_3BYTE &amp; (code &gt;&gt; 12));
+        codes[2] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 6));
+        codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
+    } else if (code &lt;= MAX_CHAR_4BYTE) {
+        codes[0] = LEAD_4BYTE | (FILTER_4BYTE &amp; (code &gt;&gt; 18));
+        codes[1] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 12));
+        codes[2] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 6));
+        codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
+    }
+}
+</code></pre>
+<p>This is only something I've wrote to learn about <code>unicode</code> and <code>utf8</code>.</p>
+<p>by: <a href="https://github.com/mnerv">mnerv</a></p>
 
                     </main>
 
