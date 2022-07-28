@@ -100,8 +100,12 @@ source: [stackoverflow](https://stackoverflow.com/questions/56383454/initialize-
 This code is only used for learning purpose only, it is simple enough to know what unicode is and what is utf8.
 
 ```cpp
+// Test with C++17, C++20
+#include <array>
+#include <cstdint>
+
 constexpr std::size_t UTF8_SIZE = 4;  // byte
-void code2utf8(std::uint32_t const& code, std::array<std::uint8_t, UTF8_SIZE>& codes) {
+constexpr auto code2utf8(std::uint32_t const& code) -> std::array<std::uint8_t, UTF8_SIZE> {
     // Leading sequence for different byte size
     constexpr std::uint8_t LEAD_1BYTE = 0b00000000;  // 0x00
     constexpr std::uint8_t LEAD_2BYTE = 0b11000000;  // 0xC0
@@ -122,7 +126,7 @@ void code2utf8(std::uint32_t const& code, std::array<std::uint8_t, UTF8_SIZE>& c
     constexpr std::uint8_t FILTER_REST     = 0b00111111;
 
     // Initialise the element with zero
-    codes[0] = codes[1] = codes[2] = codes[3] = 0x00;
+    std::array<std::uint8_t, UTF8_SIZE> codes{0x00};
 
     if (code <= MAX_CHAR_1BYTE) {
         codes[3] = LEAD_1BYTE | (FILTER_1BYTE & code);
@@ -139,6 +143,8 @@ void code2utf8(std::uint32_t const& code, std::array<std::uint8_t, UTF8_SIZE>& c
         codes[2] = LEAD_REST  | (FILTER_REST  & (code >> 6));
         codes[3] = LEAD_REST  | (FILTER_REST  & (code >> 0));
     }
+
+    return codes;
 }
 ```
 
