@@ -209,8 +209,12 @@ really large.</p>
 <p>source: <a href="https://stackoverflow.com/questions/56383454/initialize-an-stdarray-algorithmically-at-compile-time">stackoverflow</a></p>
 <h2 id="simple-32-bit-unicode-to-utf8-conversion"><a class="header" href="#simple-32-bit-unicode-to-utf8-conversion">Simple 32-bit unicode to utf8 conversion</a></h2>
 <p>This code is only used for learning purpose only, it is simple enough to know what unicode is and what is utf8.</p>
-<pre><code class="language-cpp">constexpr std::size_t UTF8_SIZE = 4;  // byte
-void code2utf8(std::uint32_t const&amp; code, std::array&lt;std::uint8_t, UTF8_SIZE&gt;&amp; codes) {
+<pre><code class="language-cpp">// Test with C++17, C++20
+#include &lt;array&gt;
+#include &lt;cstdint&gt;
+
+constexpr std::size_t UTF8_SIZE = 4;  // byte
+constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std::uint8_t, UTF8_SIZE&gt; {
     // Leading sequence for different byte size
     constexpr std::uint8_t LEAD_1BYTE = 0b00000000;  // 0x00
     constexpr std::uint8_t LEAD_2BYTE = 0b11000000;  // 0xC0
@@ -231,7 +235,7 @@ void code2utf8(std::uint32_t const&amp; code, std::array&lt;std::uint8_t, UTF8_S
     constexpr std::uint8_t FILTER_REST     = 0b00111111;
 
     // Initialise the element with zero
-    codes[0] = codes[1] = codes[2] = codes[3] = 0x00;
+    std::array&lt;std::uint8_t, UTF8_SIZE&gt; codes{0x00};
 
     if (code &lt;= MAX_CHAR_1BYTE) {
         codes[3] = LEAD_1BYTE | (FILTER_1BYTE &amp; code);
@@ -248,6 +252,8 @@ void code2utf8(std::uint32_t const&amp; code, std::array&lt;std::uint8_t, UTF8_S
         codes[2] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 6));
         codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
     }
+
+    return codes;
 }
 </code></pre>
 <p>This is only something I've wrote to learn about <code>unicode</code> and <code>utf8</code>.</p>
