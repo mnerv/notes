@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>C++ Code Snippet - notes</title>
+        <title>Analyze Binary File - notes</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html" class="active"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">4.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">5.</strong> raspberry pi</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html" class="active"><strong aria-hidden="true">4.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">5.</strong> raspberry pi</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -113,7 +113,7 @@
                         <a href="https://github.com/mnerv/notes" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/mnerv/notes/edit/trunk/src/cpp.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/mnerv/notes/edit/trunk/src/bin_an.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -140,133 +140,27 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="c-code-snippet"><a class="header" href="#c-code-snippet">C++ Code Snippet</a></h1>
-<p>Contain code snippet for C++ gathered over the years.</p>
-<h2 id="type-safe-length-of-c-array"><a class="header" href="#type-safe-length-of-c-array">Type safe length of C array</a></h2>
-<pre><code class="language-cpp">template &lt;typename T, std::size_t N&gt;
-constexpr auto length_of(T (&amp;)[N]) -&gt; std::size_t {
-    return N;
-}
-</code></pre>
-<p>This code is equivalent to making a macro to get the length of C style array.</p>
-<pre><code class="language-cpp">#define length_of(x) sizeof(x) / sizeof(x[0])
-</code></pre>
-<p>Usage:</p>
-<pre><code class="language-cpp">std::int32_t arr[] = {1, 2, 3, 4};
-
-length_of(arr);  // 4
-</code></pre>
-<h2 id="curry-function-with-template"><a class="header" href="#curry-function-with-template">Curry function with Template</a></h2>
-<p>This template function is trying to emulate the curry technique of converting a
-function that takes multiple arguments into a sequence of functions that each
-takes a single argument.</p>
-<p><a href="https://en.wikipedia.org/wiki/Currying">Currying - Wikipedia</a>.</p>
-<pre><code class="language-cpp">template &lt;typename callable, typename... params&gt;
-auto curry(callable f, params... ps) {
-    if constexpr (requires { f(ps...); }) {
-        return f(ps...);
-    } else {
-        return [f, ps...](auto... qs) {
-            return curry(f, ps..., qs...);
-        };
-    }
-}
-</code></pre>
-<p>Usage:</p>
-<pre><code class="language-cpp">auto fn = [](std::int32_t a, std::int32_t b) {
-    return a + b;
-};
-
-auto crr = curry(fn, 1);
-crr(2);  // 3
-</code></pre>
-<h2 id="read-text-into-stdstring"><a class="header" href="#read-text-into-stdstring">Read text into std::string</a></h2>
-<p>This will read the whole text file into memory which is not ideal if the file is
-really large.</p>
-<pre><code class="language-cpp">#include &lt;fstream&gt;
-#include &lt;ios&gt;
-</code></pre>
-<pre><code class="language-cpp">auto read_text(std::string const&amp; filename) -&gt; std::string {
-    std::ifstream input{filename, std::ios::in};
-    if (!input.is_open() || input.fail())
-        throw std::runtime_error(&quot;ERROR: Loading textfile!&quot;);
-    return {
-        std::istreambuf_iterator&lt;char&gt;(input),
-        std::istreambuf_iterator&lt;char&gt;()
-    };
-}
-</code></pre>
-<h2 id="compile-time-array-precompute-values"><a class="header" href="#compile-time-array-precompute-values">Compile time array precompute values</a></h2>
-<p>This uses lambda to precompute values for a fixed array at compile time. Requires <code>C++17</code>.</p>
-<pre><code class="language-cpp">static constexpr auto axis = [] {
-    std::array&lt;double, num_points&gt; a{};
-    for (int i = 0; i &lt; num_points; ++i) {
-        a[i] = static_cast&lt;double&gt;(i);
-    }
-    return a;
-}();
-</code></pre>
-<p>source: <a href="https://stackoverflow.com/questions/56383454/initialize-an-stdarray-algorithmically-at-compile-time">stackoverflow</a></p>
-<h2 id="simple-32-bit-unicode-to-utf8-conversion"><a class="header" href="#simple-32-bit-unicode-to-utf8-conversion">Simple 32-bit unicode to utf8 conversion</a></h2>
-<p>This code is only used for learning purpose only, it is simple enough to know what unicode is and what is utf8.</p>
-<pre><code class="language-cpp">// Test with C++17, C++20
-#include &lt;array&gt;
-#include &lt;cstdint&gt;
-
-constexpr std::size_t UTF8_SIZE = 4;  // byte
-constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std::uint8_t, UTF8_SIZE&gt; {
-    // Leading sequence for different byte size
-    constexpr std::uint8_t LEAD_1BYTE = 0b00000000;  // 0x00
-    constexpr std::uint8_t LEAD_2BYTE = 0b11000000;  // 0xC0
-    constexpr std::uint8_t LEAD_3BYTE = 0b11100000;  // 0xE0
-    constexpr std::uint8_t LEAD_4BYTE = 0b11110000;  // 0xF0
-    constexpr std::uint8_t LEAD_REST  = 0b10000000;  // 0x80
-
-    // Max character count for different byte size
-    constexpr std::uint32_t MAX_CHAR_1BYTE = 0x0000007F;  // MAX 127     CHARACTERS WITH 1 BYTE
-    constexpr std::uint32_t MAX_CHAR_2BYTE = 0x00000800;  // MAX 2048    CHARACTERS WITH 2 BYTE
-    constexpr std::uint32_t MAX_CHAR_3BYTE = 0x00010000;  // MAX 65536   CHARACTERS WITH 3 BYTE
-    constexpr std::uint32_t MAX_CHAR_4BYTE = 0x00200000;  // MAX 2097152 CHARACTERS WITH 4 BYTE
-
-    constexpr std::uint8_t FILTER_1BYTE    = 0b01111111;
-    constexpr std::uint8_t FILTER_2BYTE    = 0b00011111;
-    constexpr std::uint8_t FILTER_3BYTE    = 0b00001111;
-    constexpr std::uint8_t FILTER_4BYTE    = 0b00000111;
-    constexpr std::uint8_t FILTER_REST     = 0b00111111;
-
-    // Initialise the element with zero
-    std::array&lt;std::uint8_t, UTF8_SIZE&gt; codes{0x00};
-
-    if (code &lt;= MAX_CHAR_1BYTE) {
-        codes[3] = LEAD_1BYTE | (FILTER_1BYTE &amp; code);
-    } else if (code &lt;= MAX_CHAR_2BYTE) {
-        codes[2] = LEAD_2BYTE | (FILTER_2BYTE &amp; (code &gt;&gt; 6));
-        codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
-    } else if (code &lt;= MAX_CHAR_3BYTE) {
-        codes[1] = LEAD_3BYTE | (FILTER_3BYTE &amp; (code &gt;&gt; 12));
-        codes[2] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 6));
-        codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
-    } else if (code &lt;= MAX_CHAR_4BYTE) {
-        codes[0] = LEAD_4BYTE | (FILTER_4BYTE &amp; (code &gt;&gt; 18));
-        codes[1] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 12));
-        codes[2] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 6));
-        codes[3] = LEAD_REST  | (FILTER_REST  &amp; (code &gt;&gt; 0));
-    }
-
-    return codes;
-}
-</code></pre>
-<p>This is only something I've wrote to learn about <code>unicode</code> and <code>utf8</code>.</p>
-<p>by: <a href="https://github.com/mnerv">mnerv</a></p>
+                        <h1 id="analyse-binary-file"><a class="header" href="#analyse-binary-file">Analyse binary file</a></h1>
+<p>file</p>
+<p>ldd</p>
+<p>ltrace</p>
+<p>hexdump</p>
+<p>strings</p>
+<p>readelf</p>
+<p>objdump</p>
+<p>strace</p>
+<p>nm</p>
+<p>gdb</p>
+<p>lldb</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="server/nginx.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="ssh.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="raspberrypi/raspberrypi.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -275,10 +169,10 @@ constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std:
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="server/nginx.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="ssh.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="raspberrypi/raspberrypi.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
