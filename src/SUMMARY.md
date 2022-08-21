@@ -16,5 +16,6 @@
 
 # Notes
 
+  - [Analyze Binary File](./bin_an.md)
   - [raspberry pi](./raspberrypi/raspberrypi.md)
 
