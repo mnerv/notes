@@ -223,11 +223,14 @@ constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std:
     constexpr std::uint8_t LEAD_REST  = 0b10000000;  // 0x80
 
     // Max character count for different byte size
+    // Use for selecting utf8 byte size for the current code
     constexpr std::uint32_t MAX_CHAR_1BYTE = 0x0000007F;  // MAX 127     CHARACTERS WITH 1 BYTE
     constexpr std::uint32_t MAX_CHAR_2BYTE = 0x00000800;  // MAX 2048    CHARACTERS WITH 2 BYTE
     constexpr std::uint32_t MAX_CHAR_3BYTE = 0x00010000;  // MAX 65536   CHARACTERS WITH 3 BYTE
     constexpr std::uint32_t MAX_CHAR_4BYTE = 0x00200000;  // MAX 2097152 CHARACTERS WITH 4 BYTE
 
+    // Filter out trash data in the code for different
+    // byte size of the utf8.
     constexpr std::uint8_t FILTER_1BYTE    = 0b01111111;
     constexpr std::uint8_t FILTER_2BYTE    = 0b00011111;
     constexpr std::uint8_t FILTER_3BYTE    = 0b00001111;
@@ -237,6 +240,9 @@ constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std:
     // Initialise the element with zero
     std::array&lt;std::uint8_t, UTF8_SIZE&gt; codes{0x00};
 
+    // The LEAD pattern determines what size utf8 it is and the rest of the
+    // code have a leading 1. This is the reason utf8 only supports
+    // maximum 127 character with one byte.
     if (code &lt;= MAX_CHAR_1BYTE) {
         codes[3] = LEAD_1BYTE | (FILTER_1BYTE &amp; code);
     } else if (code &lt;= MAX_CHAR_2BYTE) {
