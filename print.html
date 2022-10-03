@@ -279,13 +279,13 @@ std::uniform_int_distribution&lt;std::mt19937::result_type&gt; dist(0, 1);
 <h3 id="set-the-version-to-41"><a class="header" href="#set-the-version-to-41">Set the version to 4.1</a></h3>
 <p>OpenGL 4.1 is the latest version macOS still has.</p>
 <p>For <code>GLFW</code> use the following code to set it.</p>
-<pre><code>glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+<pre><code class="language-cpp">glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 </code></pre>
 <p>For <code>SDL</code>.</p>
-<pre><code>SDL_GL_LoadLibrary(nullptr);
+<pre><code class="language-cpp">SDL_GL_LoadLibrary(nullptr);
 SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, true);
 // Set OpenGL 4.1
 SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
