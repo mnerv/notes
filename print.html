@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">2.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">3.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">3.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">3.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">3.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">4.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">5.</strong> raspberry pi</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="cpp-opengl.html"><strong aria-hidden="true">2.</strong> OpenGL C++ Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">3.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">4.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">4.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">4.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">4.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">5.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">6.</strong> raspberry pi</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -265,6 +265,35 @@ constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std:
 </code></pre>
 <p>This is only something I've wrote to learn about <code>unicode</code> and <code>utf8</code>.</p>
 <p>by: <a href="https://github.com/mnerv">mnerv</a></p>
+<h2 id="stdrandom"><a class="header" href="#stdrandom">std::random</a></h2>
+<pre><code class="language-cpp">#include &lt;random&gt;
+// ...
+
+std::random_device rdevice;
+std::mt19937 rng{rdevice()};
+std::uniform_int_distribution&lt;std::mt19937::result_type&gt; dist(0, 1);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="opengl-c-snippets"><a class="header" href="#opengl-c-snippets">OpenGL C++ Snippets</a></h1>
+<h2 id="macos"><a class="header" href="#macos">macOS</a></h2>
+<p>macOS related settings for OpenGL.</p>
+<h3 id="set-the-version-to-41"><a class="header" href="#set-the-version-to-41">Set the version to 4.1</a></h3>
+<p>OpenGL 4.1 is the latest version macOS still has.</p>
+<p>For <code>GLFW</code> use the following code to set it.</p>
+<pre><code>glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+</code></pre>
+<p>For <code>SDL</code>.</p>
+<pre><code>SDL_GL_LoadLibrary(nullptr);
+SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, true);
+// Set OpenGL 4.1
+SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ssh"><a class="header" href="#ssh">ssh</a></h1>
 <p>Quick and simple SSH guide setup.</p>
 <h2 id="keys"><a class="header" href="#keys">Keys</a></h2>
