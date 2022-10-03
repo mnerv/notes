@@ -5,6 +5,7 @@
 # Code Snippets
 
   - [C++ Code Snippet](./cpp.md)
+  - [OpenGL C++ Snippet](./cpp-opengl.md)
 
 # Guide
 

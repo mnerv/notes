@@ -158,3 +158,14 @@ This is only something I've wrote to learn about `unicode` and `utf8`.
 
 by: [mnerv](https://github.com/mnerv)
 
+## std::random
+
+```cpp
+#include <random>
+// ...
+
+std::random_device rdevice;
+std::mt19937 rng{rdevice()};
+std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1);
+```
+
