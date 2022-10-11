@@ -7,6 +7,11 @@
   - [C++ Code Snippet](./cpp.md)
   - [OpenGL C++ Snippet](./cpp-opengl.md)
 
+# Notes about C/C++
+
+  - [C++](./cpp/README.md)
+    - [Package Manager](./cpp/pkg.md)
+
 # Guide
 
   - [ssh](./ssh.md)
