@@ -169,3 +169,19 @@ std::mt19937 rng{rdevice()};
 std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1);
 ```
 
+## Print with utf-8 encoding
+
+If the terminal is not set correctly the character outside ASCII table will not be printable. This will force it to `utf-8` encoding.
+
+```
+#include <locale>
+\\ ...
+std::setlocale(LC_ALL, "en_US.UTF-8");
+```
+
+On unix system run command below to get list of all installed locale settings.
+
+```
+locale -e
+```
+
