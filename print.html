@@ -273,6 +273,15 @@ std::random_device rdevice;
 std::mt19937 rng{rdevice()};
 std::uniform_int_distribution&lt;std::mt19937::result_type&gt; dist(0, 1);
 </code></pre>
+<h2 id="print-with-utf-8-encoding"><a class="header" href="#print-with-utf-8-encoding">Print with utf-8 encoding</a></h2>
+<p>If the terminal is not set correctly the character outside ASCII table will not be printable. This will force it to <code>utf-8</code> encoding.</p>
+<pre><code>#include &lt;locale&gt;
+\\ ...
+std::setlocale(LC_ALL, &quot;en_US.UTF-8&quot;);
+</code></pre>
+<p>On unix system run command below to get list of all installed locale settings.</p>
+<pre><code>locale -e
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="opengl-c-snippets"><a class="header" href="#opengl-c-snippets">OpenGL C++ Snippets</a></h1>
 <h2 id="macos"><a class="header" href="#macos">macOS</a></h2>
 <p>macOS related settings for OpenGL.</p>
