@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>OpenGL C++ Snippet - notes</title>
+        <title>ffmpeg - notes</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="cpp-opengl.html" class="active"><strong aria-hidden="true">2.</strong> OpenGL C++ Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Notes about C/C++</li><li class="chapter-item expanded "><a href="cpp/index.html"><strong aria-hidden="true">3.</strong> C++</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cpp/pkg.html"><strong aria-hidden="true">3.1.</strong> Package Manager</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">4.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">5.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">5.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">5.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">5.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">6.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">7.</strong> raspberry pi</a></li><li class="chapter-item expanded "><a href="ffmpeg.html"><strong aria-hidden="true">8.</strong> ffmpeg</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="cpp-opengl.html"><strong aria-hidden="true">2.</strong> OpenGL C++ Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Notes about C/C++</li><li class="chapter-item expanded "><a href="cpp/index.html"><strong aria-hidden="true">3.</strong> C++</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cpp/pkg.html"><strong aria-hidden="true">3.1.</strong> Package Manager</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">4.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">5.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">5.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">5.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">5.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">6.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">7.</strong> raspberry pi</a></li><li class="chapter-item expanded "><a href="ffmpeg.html" class="active"><strong aria-hidden="true">8.</strong> ffmpeg</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -121,7 +121,7 @@
                         <a href="https://github.com/mnerv/notes" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/mnerv/notes/edit/trunk/src/cpp-opengl.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/mnerv/notes/edit/trunk/src/ffmpeg.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -150,39 +150,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="opengl-c-snippets"><a class="header" href="#opengl-c-snippets">OpenGL C++ Snippets</a></h1>
-<h2 id="macos"><a class="header" href="#macos">macOS</a></h2>
-<p>macOS related settings for OpenGL.</p>
-<h3 id="set-the-version-to-41"><a class="header" href="#set-the-version-to-41">Set the version to 4.1</a></h3>
-<p>OpenGL 4.1 is the latest version macOS still has.</p>
-<p>For <code>GLFW</code> use the following code to set it.</p>
-<pre><code class="language-cpp">glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+                        <h1 id="ffmpeg"><a class="header" href="#ffmpeg">ffmpeg</a></h1>
+<h2 id="crop-and-scale"><a class="header" href="#crop-and-scale">Crop and Scale</a></h2>
+<pre><code>ffmpeg -i {input} -filter:v &quot;crop=iw:iw/3:0:200,scale=900:300&quot; -c:v libx264 -crf 18 -c:a copy {output}
 </code></pre>
-<p>For <code>SDL</code>.</p>
-<pre><code class="language-cpp">SDL_GL_LoadLibrary(nullptr);
-SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, true);
-// Set OpenGL 4.1
-SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+<h2 id="convert-to-images"><a class="header" href="#convert-to-images">Convert to images</a></h2>
+<pre><code class="language-sh">ffmpeg -i {video} -vf fps=1 %d.png
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="cpp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="raspberrypi/raspberrypi.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="cpp/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -190,13 +173,10 @@ SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="cpp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="raspberrypi/raspberrypi.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="cpp/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
