@@ -170,16 +170,13 @@ length_of(arr);  // 4
 <h2 id="curry-function-with-template"><a class="header" href="#curry-function-with-template">Curry function with Template</a></h2>
 <p>This template function is trying to emulate the curry technique of converting a
 function that takes multiple arguments into a sequence of functions that each
-takes a single argument.</p>
+takes a single argument. See <a href="https://www.youtube.com/watch?v=15U4qutsPGk">video</a> for more info.</p>
 <p><a href="https://en.wikipedia.org/wiki/Currying">Currying - Wikipedia</a>.</p>
-<pre><code class="language-cpp">template &lt;typename callable, typename... params&gt;
-auto curry(callable f, params... ps) {
-    if constexpr (requires { f(ps...); }) {
-        return f(ps...);
+<pre><code class="language-cpp">constexpr decltype(auto) curry(auto f, auto... ps){
+    if constexpr (requires { std::invoke(f, ps...); }) {
+        return std::invoke(f, ps...);
     } else {
-        return [f, ps...](auto... qs) {
-            return curry(f, ps..., qs...);
-        };
+        return [f, ps...](auto... qs) -&gt; decltype(auto) { return curry(f, ps..., qs...); };
     }
 }
 </code></pre>
