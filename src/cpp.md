@@ -29,19 +29,17 @@ length_of(arr);  // 4
 
 This template function is trying to emulate the curry technique of converting a
 function that takes multiple arguments into a sequence of functions that each
-takes a single argument.
+takes a single argument. See [video](https://www.youtube.com/watch?v=15U4qutsPGk) for more info.
 
 [Currying - Wikipedia](https://en.wikipedia.org/wiki/Currying).
 
+
 ```cpp
-template <typename callable, typename... params>
-auto curry(callable f, params... ps) {
-    if constexpr (requires { f(ps...); }) {
-        return f(ps...);
+constexpr decltype(auto) curry(auto f, auto... ps){
+    if constexpr (requires { std::invoke(f, ps...); }) {
+        return std::invoke(f, ps...);
     } else {
-        return [f, ps...](auto... qs) {
-            return curry(f, ps..., qs...);
-        };
+        return [f, ps...](auto... qs) -> decltype(auto) { return curry(f, ps..., qs...); };
     }
 }
 ```
