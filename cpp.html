@@ -88,11 +88,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -154,17 +176,17 @@
 <p>Contain code snippet for C++ gathered over the years.</p>
 <h2 id="type-safe-length-of-c-array"><a class="header" href="#type-safe-length-of-c-array">Type safe length of C array</a></h2>
 <pre><code class="language-cpp">template &lt;typename T, std::size_t N&gt;
-constexpr auto length_of(T (&amp;)[N]) -&gt; std::size_t {
+constexpr auto len(T (&amp;)[N]) -&gt; std::size_t {
     return N;
 }
 </code></pre>
-<p>This code is equivalent to making a macro to get the length of C style array.</p>
-<pre><code class="language-cpp">#define length_of(x) sizeof(x) / sizeof(x[0])
+<p>This code is equivalent to making a macro to get the length of C style array. The difference is that it only works with <code>[]</code> array.</p>
+<pre><code class="language-cpp">#define len(x) sizeof(x) / sizeof(x[0])
 </code></pre>
 <p>Usage:</p>
 <pre><code class="language-cpp">std::int32_t arr[] = {1, 2, 3, 4};
 
-length_of(arr);  // 4
+len(arr);  // 4
 </code></pre>
 <h2 id="curry-function-with-template"><a class="header" href="#curry-function-with-template">Curry function with Template</a></h2>
 <p>This template function is trying to emulate the curry technique of converting a
