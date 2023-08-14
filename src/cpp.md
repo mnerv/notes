@@ -6,15 +6,15 @@ Contain code snippet for C++ gathered over the years.
 
 ```cpp
 template <typename T, std::size_t N>
-constexpr auto length_of(T (&)[N]) -> std::size_t {
+constexpr auto len(T (&)[N]) -> std::size_t {
     return N;
 }
 ```
 
-This code is equivalent to making a macro to get the length of C style array.
+This code is equivalent to making a macro to get the length of C style array. The difference is that it only works with `[]` array.
 
 ```cpp
-#define length_of(x) sizeof(x) / sizeof(x[0])
+#define len(x) sizeof(x) / sizeof(x[0])
 ```
 
 Usage:
@@ -22,7 +22,7 @@ Usage:
 ```cpp
 std::int32_t arr[] = {1, 2, 3, 4};
 
-length_of(arr);  // 4
+len(arr);  // 4
 ```
 
 ## Curry function with Template
