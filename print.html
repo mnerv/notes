@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="cpp-opengl.html"><strong aria-hidden="true">2.</strong> OpenGL C++ Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Notes about C/C++</li><li class="chapter-item expanded "><a href="cpp/index.html"><strong aria-hidden="true">3.</strong> C++</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cpp/pkg.html"><strong aria-hidden="true">3.1.</strong> Package Manager</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">4.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">5.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">5.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">5.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">5.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">6.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">7.</strong> raspberry pi</a></li><li class="chapter-item expanded "><a href="ffmpeg.html"><strong aria-hidden="true">8.</strong> ffmpeg</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Code Snippets</li><li class="chapter-item expanded "><a href="cpp.html"><strong aria-hidden="true">1.</strong> C++ Code Snippet</a></li><li class="chapter-item expanded "><a href="cpp-opengl.html"><strong aria-hidden="true">2.</strong> OpenGL C++ Snippet</a></li><li class="chapter-item expanded affix "><li class="part-title">Development</li><li class="chapter-item expanded "><a href="devtools.html"><strong aria-hidden="true">3.</strong> Tools</a></li><li class="chapter-item expanded affix "><li class="part-title">Notes about C/C++</li><li class="chapter-item expanded "><a href="cpp/index.html"><strong aria-hidden="true">4.</strong> C/C++</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cpp/pkg.html"><strong aria-hidden="true">4.1.</strong> Package Manager</a></li><li class="chapter-item expanded "><a href="cpp/buildsystems.html"><strong aria-hidden="true">4.2.</strong> Build Systems</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Guide</li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">5.</strong> ssh</a></li><li class="chapter-item expanded "><a href="server/index.html"><strong aria-hidden="true">6.</strong> server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="server/apache.html"><strong aria-hidden="true">6.1.</strong> apache</a></li><li class="chapter-item expanded "><a href="server/certbot.html"><strong aria-hidden="true">6.2.</strong> certbot</a></li><li class="chapter-item expanded "><a href="server/nginx.html"><strong aria-hidden="true">6.3.</strong> nginx</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Notes</li><li class="chapter-item expanded "><a href="bin_an.html"><strong aria-hidden="true">7.</strong> Analyze Binary File</a></li><li class="chapter-item expanded "><a href="raspberrypi/raspberrypi.html"><strong aria-hidden="true">8.</strong> raspberry pi</a></li><li class="chapter-item expanded "><a href="ffmpeg.html"><strong aria-hidden="true">9.</strong> ffmpeg</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -294,6 +294,8 @@ constexpr auto code2utf8(std::uint32_t const&amp; code) -&gt; std::array&lt;std:
 </code></pre>
 <p>This is only something I've wrote to learn about <code>unicode</code> and <code>utf8</code>.</p>
 <p>by: <a href="https://github.com/mnerv">mnerv</a></p>
+<h2 id="utf8-conversion"><a class="header" href="#utf8-conversion">utf8 conversion</a></h2>
+<pre><code class="language-cpp"></code></pre>
 <h2 id="stdrandom"><a class="header" href="#stdrandom">std::random</a></h2>
 <pre><code class="language-cpp">#include &lt;random&gt;
 // ...
@@ -332,13 +334,38 @@ SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="c"><a class="header" href="#c">C++</a></h1>
+<h2 id="glfw"><a class="header" href="#glfw">GLFW</a></h2>
+<pre><code class="language-cpp"></code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tools"><a class="header" href="#tools">Tools</a></h1>
+<p>Useful tools that aids development</p>
+<h2 id="cross-platform"><a class="header" href="#cross-platform">Cross-Platform</a></h2>
+<ul>
+<li><a href="https://github.com/WerWolv/ImHex">ImHex</a></li>
+</ul>
+<h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
+<ul>
+<li><a href="https://www.nirsoft.net/utils/dll_export_viewer.html">DLL Export Viewer</a></li>
+<li><a href="https://x64dbg.com/">x64dbg</a></li>
+<li><a href="https://github.com/x64dbg/TitanEngine">TitanEngine</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cc"><a class="header" href="#cc">C/C++</a></h1>
 <p>This section contains notes about C++ related topics. There might be some topic about C too since toolchain overlaps quite a lot.</p>
 <ul>
 <li><a href="cpp/./pkg.html">Package Manager</a></li>
+<li><a href="cpp/./buildsystems.html">Build Systems</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="package-manager"><a class="header" href="#package-manager">Package Manager</a></h1>
-<p>In C/C++ there were not great package manager before but now we have <a href="https://vcpkg.io">vcpkg</a>, <a href="https://conan.iok">conan</a> and others.</p>
+<p>In C/C++ there were not great package manager before but now we have <a href="https://vcpkg.io">vcpkg</a>, <a href="https://conan.iok">conan</a> and others. We can also use gitsubmodules.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="build-systems"><a class="header" href="#build-systems">Build Systems</a></h1>
+<p>In this section we highlight common build system that is in use for C/C++ projects.</p>
+<h2 id="cmake"><a class="header" href="#cmake">CMake</a></h2>
+<pre><code class="language-CMakeLists.txt"></code></pre>
+<h2 id="mason"><a class="header" href="#mason">Mason</a></h2>
+<pre><code class="language-meson.build"></code></pre>
+<h2 id="autotools"><a class="header" href="#autotools">Autotools</a></h2>
+<pre><code class="language-sh"></code></pre>
+<h2 id="premake"><a class="header" href="#premake">Premake</a></h2>
+<pre><code class="language-lua"></code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ssh"><a class="header" href="#ssh">ssh</a></h1>
 <p>Quick and simple SSH guide setup.</p>
 <h2 id="keys"><a class="header" href="#keys">Keys</a></h2>
