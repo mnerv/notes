@@ -7,10 +7,15 @@
   - [C++ Code Snippet](./cpp.md)
   - [OpenGL C++ Snippet](./cpp-opengl.md)
 
+# Development
+
+  - [Tools](./devtools.md)
+
 # Notes about C/C++
 
-  - [C++](./cpp/README.md)
+  - [C/C++](./cpp/README.md)
     - [Package Manager](./cpp/pkg.md)
+    - [Build Systems](./cpp/buildsystems.md)
 
 # Guide
 
