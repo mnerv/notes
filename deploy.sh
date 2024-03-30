@@ -160,6 +160,13 @@ build() {
   files=$(cat $registry_path)
   args="--build-dir=$build_dir"
 
+  if [[ $is_dry_run = true ]]; then
+    for file in $files; do
+      echo "./compile.sh $args $file"
+    done
+    return 0
+  fi
+
   if [[ $is_parallel = true ]]; then
      parallel --will-cite sh ./compile.sh $args ::: $files
   else

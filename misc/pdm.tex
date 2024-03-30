@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{spalign}
+\usepackage{xfrac}
+\usepackage{parskip}
+\usepackage{float}  % figure[H]
+\usepackage[style=ieee,backend=biber]{biblatex}
+\usepackage[breaklinks=true,bookmarks=true,hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\pgfplotsset{compat=newest,compat/show suggested version=false}
+
+% python ./misc/pdm.y --no-show
+
+\geometry{
+    a4paper,
+    hmargin=2.54cm,
+    tmargin=1.27cm,
+    bmargin=1.27cm,
+    includeheadfoot
+}
+\setcounter{secnumdepth}{0}  % Disable section numbering
+
+\begin{document}
+\section{PDM (Pulse Density Modulation)}
+
+Pulse-density modulation or PDM is a modulation technique used to represent
+analog signal with binary signal.
+
+Figure \ref{fig:cb_adc} shows a simple charge balance ADC circuit. Where
+$\Delta$ is the input into the integrator and $\Sigma$ is the output of the
+first opamp. $V_{ref}$ is usually replaced with current source or a Digital to
+Analog Converter (DAC). This switches between two voltages, one or minus one
+volt.
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=0.6, transform shape]
+        \ctikzset{european resistors};
+        \draw (0,0) node[above]{$V_{in}$} to[short, o-] ++(1,0)
+        % First OpAmp
+        node[op amp, noinv input down, anchor=+](OA) {}
+        (OA.-) -- ++(0,1.5) coordinate(FB)
+        to[C=$C$, *-] (FB-| OA.out) to[short, -*] (OA.out)  % V_{int}
+        (FB) -- ++(0, 1.5) coordinate(CA)
+
+        % Second OpAmp
+        (OA.out) -- ++(2.5,0)
+        node[op amp, noinv input up, anchor=+](OATh) {}
+        (OATh.-) -- ++(0,-0.5) to[dcvsource,name=VTh] ++(0,-1) -- ++(0,-0.25)
+        node[rground]{}
+        node[left] at (VTh.s) {$V_{th}$}
+
+        % D Flip-Flop
+        (OATh.out) -- ++(1,0)
+        node[latch, anchor=pin 1](DFF) {}
+        (DFF.pin 6) to[short, -*] ++(1,0) coordinate(OUT)
+        to[short, -o] ++(1.5,0) node[above]{$OUT$}
+
+        % ADC
+        (OUT) -- (CA-| OUT) node[spdt, yscale=-1] (sw) {}
+        (sw.out 1) -- ++(1,0) -- ++(0,-0.5) node[rground]{}
+        (sw.out 2) -- ++(0.5,0) node[right] {$V_{ref}$}
+
+        % Resistor
+        (CA) to[short] (CA-| OA.out) to[R=$R$] (sw.in);
+
+        % Blocks: Integrator
+        \draw[cyan, thin] (0.75,-3.25) rectangle +(3.25,7.5)
+        ({0.75+3.25/2},-3.25) node[above]{Integrator};
+        % Blocks: ADC
+        \draw[red, thin] (4.5,-3.25) rectangle +(7.5,4.5)
+        ({4.5+7.5/2},-3.25) node[above]{ADC};
+        % Blocks: DAC
+        \draw[green, thin] (11.75,2) rectangle +(3,3)
+        ({11.75+3/2},2) node[above]{DAC};
+    \end{circuitikz}
+    \caption{Charge Balance ADC}
+    \label{fig:cb_adc}
+\end{figure}
+
+Figure \ref{fig:dsm_a} shows a first-order delta-sigma modulator, a simplification of the figure
+\ref{fig:cb_adc}. The integrator is split into two parts, $\Delta$ and $\Sigma$.
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw (0,0) node[adder](mix){}
+        (-1.5,0) node[above]{$V_{in}$} to[short, o-] (mix.left) node[inputarrow]{}
+        (mix.right) -- ++(1,0) node[ampshape, anchor=left, t=$\int$](amp) {} node[inputarrow]{}
+        (amp.right) -- ++(1,0) node[twoportshape, anchor=left, align=center, t={\parbox{1cm}{\scriptsize\centering 1-bit ADC}}] (adc) {} node[inputarrow]{}
+        (adc.right) to[short, -*] ++(1,0) coordinate(out)
+        -- ++(0,-2) coordinate(dac) to[twoport, >, t={\scriptsize DAC}] (dac-| mix) -- (mix.south) node[inputarrow, ,rotate=90] {}
+        (mix.south east) node[below] {$-$}
+        (out) -- ++(1,0) node[twoportshape, anchor=left, t=\scriptsize DF](dflt) {} node[inputarrow] {}
+        (dflt.right) -- ++(1,0) node[inputarrow]{} node[above]{Output};
+        \draw (mix.north) +(0,0.5) node[]{\LARGE$\Delta$};
+        \draw (amp.north) +(0,0.5) node[]{\LARGE$\Sigma$};
+        \draw (dflt.north) +(0,0.5) node[]{Digital Filter};
+    \end{circuitikz}
+    \caption{Delta-Sigma Modulator}
+    \label{fig:dsm_a}
+\end{figure}
+
+\end{document}

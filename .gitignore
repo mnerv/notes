@@ -6,7 +6,10 @@ dist-ssr
 node_modules
 public/*.tar.gz
 public/pdf
-test.png
+
+# Images/PDFs
+*.pdf
+misc/*.png
 
 # Environments
 .venv

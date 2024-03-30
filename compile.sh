@@ -98,7 +98,11 @@ recursive_index() {
 
   _grep_regex='((input)|(includegraphics\[.*\])|(addbibresource))\{.+\}'
   _replace_regex='s/\\((input)|(includegraphics\[.*\])|(addbibresource))\{(.+)\}/\5/'
-  _deps=$(cat "$1" | grep -E "$_grep_regex" | sed -r "$_replace_regex")
+  if ! [ -d "$1" ]; then
+    _deps=$(cat "$1" | grep -E "$_grep_regex" | sed -r "$_replace_regex")
+  else
+    _deps=""
+  fi
 
   if ! [[ -z "$_deps" ]]; then
     if ! [[ -z "$file_deps" ]]; then
@@ -160,7 +164,7 @@ prebuild() {
 
   # Generate local registry for dependencies
   recursive_index $filepath
-  file_deps=$(printf "$file_deps\n" | sort -u)
+  file_deps=$(echo "$file_deps" | sed -r "s/[ %]*//" | sort -u)
 }
 
 parse_info() {
@@ -214,7 +218,7 @@ check_cache() {
 }
 
 build() {
-  if [[ $is_cached = true ]]; then
+  if [[ $is_cached = true ]] && [[ $is_no_cache = false ]]; then
     printf "$input_file is cached.\n"
     return 0
   fi
@@ -232,7 +236,7 @@ build() {
 }
 
 postbuild() {
-  if [[ $is_cached = true ]]; then
+  if [[ $is_cached = true ]] && [[ $is_no_cache = false ]]; then
     return 0
   fi
 
@@ -266,4 +270,3 @@ prebuild
 check_cache
 build
 postbuild
-

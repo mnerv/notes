@@ -1,4 +1,5 @@
 # %% Imports
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,20 +8,23 @@ from matplotlib.ticker import EngFormatter
 
 # %% Analytics
 # Data for plotting
-fs = 10.0
+fs = 48000
 Ts = 1/fs
-f = 5.0
-t = np.arange(0.0, 2.0, Ts)
-s = 1 + np.sin(2 * np.pi * f * t * Ts )
+f = 1000
+t_end = 1/f
+t = np.arange(0.0, t_end, Ts)
+s = np.sin(2 * np.pi * f * t)
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12, 6))
 ax.plot(t, s)
-# ax.stem(t, s)
-ax.set(xlabel='time (s)', ylabel='voltage (mV)', title='Sinewave')
+ax.set(xlabel='time [s]', ylabel='amplitude [V]', title='Waveform')
+ax.xaxis.set_major_formatter(EngFormatter(unit='s'))
 ax.grid(linewidth=1, color='lightgray', alpha=0.5)
 ax.grid(which='minor', linestyle=':', linewidth=1, color='lightgray', alpha=0.25)
+# ax.axhline(y=0.0, color='black', linestyle='-', linewidth=0.85, zorder=0)
 
-# plt.savefig("test.png", dpi=512)
+#plt.savefig(f"{os.path.dirname(__file__)}/pdm_sine.png", dpi=512, bbox_inches='tight')
+plt.savefig(f"{os.path.dirname(__file__)}/pdm_sine.pdf", bbox_inches='tight')
 plt.show()
 
 # %%
