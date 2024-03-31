@@ -14,9 +14,104 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{circuitikz}
+\usepackage{subcaption}
+\usetikzlibrary {arrows.meta}
 \pgfplotsset{compat=newest,compat/show suggested version=false}
 
 % python ./misc/pdm.y --no-show
+
+% Custom shape
+\makeatletter
+\pgfdeclareshape{dflowpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    % Add more custom anchors if needed
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.85pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfhighpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfbandpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantizer}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantamp}{
+    \inheritsavedanchors[from=op amp]
+    \inheritanchorborder[from=op amp]
+    \inheritanchor[from=op amp]{center}
+    \inheritanchor[from=op amp]{+}
+    \inheritanchor[from=op amp]{-}
+    \inheritanchor[from=op amp]{out}
+    \inheritanchor[from=op amp]{up}
+    \inheritanchor[from=op amp]{down}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+        \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
+        \pgfpathclose
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\makeatother
 
 \geometry{
     a4paper,
@@ -27,17 +122,256 @@
 }
 \setcounter{secnumdepth}{0}  % Disable section numbering
 
+\begin{filecontents}{pdm.bib}
+@misc{wiki:pdm,
+    author = "{Wikipedia contributors}",
+    title = "Pulse-density modulation --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=Pulse-density_modulation&oldid=1207482277",
+    note = "[Online; accessed 30-March-2024]"
+}
+
+@misc{wiki:dsm,
+    author = "{Wikipedia contributors}",
+    title = "Delta-sigma modulation --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=Delta-sigma_modulation&oldid=1215909424",
+    note = "[Online; accessed 30-March-2024]"
+}
+
+@misc{wiki:dm,
+    author = "{Wikipedia contributors}",
+    title = "Delta modulation --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=Delta_modulation&oldid=1208147012",
+    note = "[Online; accessed 30-March-2024]"
+}
+
+@misc{wiki:pcm,
+    author = "{Wikipedia contributors}",
+    title = "Pulse-code modulation --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=Pulse-code_modulation&oldid=1205270970",
+    note = "[Online; accessed 30-March-2024]"
+}
+
+@misc{wiki:nsm,
+    author = "{Wikipedia contributors}",
+    title = "Noise shaping --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=Noise_shaping&oldid=1210497531",
+    note = "[Online; accessed 30-March-2024]"
+}
+
+@misc{wiki:ns,
+    author = "{Wikipedia contributors}",
+    title = "Noise shaping --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=Noise_shaping&oldid=1210497531",
+    note = "[Online; accessed 31-March-2024]"
+}
+
+@misc{vid:cb_dsm_adc,
+    author = {{IFE - TU Graz}},
+    year = {2021},
+    title = {{Analog-to-Digital Converters (ADC) - Charge-Balancing and Delta-Sigma ADC}},
+    url = "https://youtu.be/M5Vx-X66seg",
+    urldate = {2024-03-30}
+}
+
+@misc{vid:odsm,
+    author = {Carsten Wulff},
+    year = {2024},
+    title = {{Lecture 6 - Oversampling and Sigma-Delta Modulators}},
+    url = "https://youtu.be/fdczPHW4jis",
+    urldate = {2024-02-08}
+}
+
+@article{article:dsm,
+    author={Razavi, Behzad},
+    journal={IEEE Solid-State Circuits Magazine}, 
+    title={The Delta-Sigma Modulator [A Circuit for All Seasons]}, 
+    year={2016},
+    volume={8},
+    number={2},
+    pages={10-15},
+    keywords={Modulation;Quantization (signal);Noise shaping;Transfer functions;Capacitors;Operational amplifiers;Signal to noise ratio;Sigma-delta modulation},
+    doi={10.1109/MSSC.2016.2543061},
+    url="https://www.seas.ucla.edu/brweb/papers/Journals/BRSpring16DeltaSigma.pdf",
+    urldate={2024-03-31}
+}
+
+@article{article:dmfix,
+    author={Inose, H. and Yasuda, Y. and Murakami, J.},
+    journal={IRE Transactions on Space Electronics and Telemetry},
+    title={A Telemetering System by Code Modulation - $\Delta$- $\Delta$Modulation},
+    year={1962},
+    volume={SET-8},
+    number={3},
+    pages={204-209},
+    keywords={Modulation coding;Pulse modulation;Delta modulation;Circuits;Delay effects;Filters;Pulse generation;Particle measurements;Amplitude modulation;Bandwidth},
+    doi={10.1109/IRET-SET.1962.5008839}
+}
+\end{filecontents}
+\addbibresource{pdm.bib}
+
 \begin{document}
 \section{PDM (Pulse Density Modulation)}
 
 Pulse-density modulation or PDM is a modulation technique used to represent
-analog signal with binary signal.
+analog signal with binary signal. Part of PDM signal generation is a delta-sigma
+modulation or DSM. \cite{wiki:pdm}
+
+DSM is a class of oversampling analog-to-digital converters (ADCs). It perform a
+technique call ''quantization noise shaping''.\cite{wiki:dsm} Noise shaping's
+purpose is to increase the apparent signal-to-noise ratio of the resultant
+signal. It achieve this functionality by altering the spectral shape of
+the error that is introduced by dithering and quantization.\cite{wiki:ns}
+
+\subsection{Delta-Sigma Modulator}
+
+The predecessor to DSM is delta modulator, a block diagram is shown in figure
+\ref{fig:dm_bd} where we have input $V_{in}$ into a summation node. This node
+is what makes it a $\Delta$ (delta) in DM. This node takes the difference
+between the input and out signal. Next it performs a quantization on the output
+of the summation node to procduce a digital signal. The quantization output then
+pass to both output and an integrator. Integrator acts as a summation of all the
+previous signals, in mathematics, integral is the contiguous form of discrete
+sum $\Sigma$.
+
+Figure \ref{fig:dm_impl} depicts a simple implementation where the integrator is
+approximated by a low-pass filter. Delta modulator principal difficulity is that the
+output digital signal representation contains only the \textit{derivative} of
+the input, this can be seen by noting $V_F = \int D_{out} dt$. This
+differentiation alters the signal spectrum, attenuates the low-frequency content
+of the signal, and amplifies high-frequency noise.\cite{article:dsm}
+
+\begin{figure}[H]
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \begin{circuitikz}[scale=0.8, transform shape]
+            \draw (0,0) coordinate(in) to[short, -o] ++(-1,0) node[left]{$V_{in}$};
+            \draw (in) node[inputarrow]{} node[adder, anchor=left](add){};
+            \draw (add.left) ++(-0.25,0) node[above]{$+$}; % +
+            \draw (add.south) ++(0,-0.25) node[left]{$-$}; % -
+            \draw (add.right) to[short] ++(1,0) node[inputarrow] {} node[quantizer, anchor=left](quant) {};
+            \draw (quant.right) to[short, -*] ++(1,0) coordinate(a) to[short] ++(1,0)
+                  node[inputarrow]{} node[right]{$D_{out}$};
+            \draw (a) to[short] ++(0,-1.5) coordinate(b);
+            \draw (b) to[short] ++(-1,0) coordinate(int)
+                  to[twoport, >, t={$\int$}] ++(-1,0) coordinate(int);
+            \draw (int) to[short] (int-| add) coordinate(c) to[short] (add.south) node[inputarrow, rotate=90]{};
+            % V_F
+            \draw (c) node[left]{$V_{F}$};
+            % 1-Bit Quantizer
+            \draw (quant) +(0,1.25) node[]{\parbox{2cm}{\centering\small 1-bit Quantizer}};
+        \end{circuitikz}
+        \caption{Block Diagram of Delta Modulator}
+        \label{fig:dm_bd}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \begin{circuitikz}[scale=0.64, transform shape]
+            \ctikzset{european resistors};
+            \draw (0,0) node[op amp](amp){};
+            \draw (amp.-) to[short, -o] ++(-1.5,0) node[left]{$V_{in}$};
+            \draw (amp.+) to[short] ++(-0.5,0) coordinate(minus)
+                  to[short, -*] ++(0,-1) coordinate(fb)
+                  to[R=$R_1$] ++(0,-2.5) node[ground]{};
+            \draw (amp.out) to[short, -*] ++(0.5,0) coordinate(fbout)
+                  to[short] (fb-| fbout) to[C=$C_1$] (fb);
+            \draw (fbout) to[short] ++(1,0) node[inputarrow]{} node[right]{$D_{out}$};
+            \draw (amp.up) node[inputarrow, rotate=-90] {} to[short] ++(0,1)
+                  to[short, -*] ++(0.5,0) node[above]{$\mathrm{CLK}$};
+            \draw (minus) ++(0,-0.5) node[left]{$V_{F}$};
+        \end{circuitikz}
+        \caption{Simple Implementation of Delta Modulator}
+        \label{fig:dm_impl}
+    \end{subfigure}
+    \caption{Delta Modulation Diagrams.\cite{article:dsm}}
+    \label{fig:dm}
+\end{figure}
+
+The differentiation effect is avoided in 1962 by Inose et al.\cite{article:dmfix}
+that cleverly moved the integrator from the feedback path to the forward path,
+introducing the ''$\Delta\Sigma$ modulator'' shown in figure \ref{fig:dsm_bd}.
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw (0,0) node[adder](add){};
+        \draw (add.left) ++(-0.25,0) node[above]{$+$}; % +
+        \draw (add.south) ++(0,-0.25) node[left]{$-$}; % -
+        \draw (add.left) node[inputarrow]{}
+              to[short, -o] ++(-1,0) node[left]{$V_{in}$};
+        \draw (add.right) to[short] ++(1,0) node[inputarrow]{}
+              node[twoportshape, anchor=left, t=$\int$](int){};
+        \draw (int.right) to[short] ++(1,0) node[inputarrow]{}
+              node[quantizer, anchor=left](quant){};
+        \draw (quant.right) to[short, -*] ++(1,0) coordinate(a)
+              to[short] ++(0,-1.5) coordinate(b) to[short] (b-| add)
+              to[short] (add.south) node[inputarrow, rotate=90]{};
+        \draw (a) to[short] ++(1,0) node[inputarrow]{} node[right]{$D_{out}$};
+    \end{circuitikz}
+    \caption{Delta-Sigma Modulator}
+    \label{fig:dsm_bd}
+\end{figure}
+
+A higher-order DSMs is describe by Tewksbury and Hallock in 1978 shown in figure \ref{fig:hodsm}.
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw (0,0) node[adder](add){};
+        \draw (add.left) ++(-0.25,0) node[above]{$+$}; % +
+        \draw (add.south) ++(0,-0.25) node[left]{$-$}; % -
+        \draw (add.left) node[inputarrow]{}
+              to[short, -o] ++(-1,0) node[left]{$S_{n}$};
+        \draw (add.right) to[short] ++(1,0) node[inputarrow]{}
+              node[twoportshape, anchor=left, t=$\int$](inta){};
+        \draw (inta.right) to[short] ++(1,0) node[inputarrow]{}
+               node[adder, anchor=left](addb){};
+        \draw (addb.left) ++(-0.25,0) node[above]{$+$}; % +
+        \draw (addb.south) ++(0,-0.25) node[left]{$-$}; % -
+        \draw (addb.right) to[short] ++(1,0) node[inputarrow]{}
+              node[twoportshape, anchor=left, t=$\int$](intb){};
+        \draw (intb.right) to[short] ++(1,0) coordinate(a);
+        % dot dot dot
+        \draw[thick,dotted] (a) ++(0.25,0) -- ++(0.3,0) ++(0.25,0) coordinate(b);
+        \draw (b) to[short] ++(1,0) node[inputarrow]{}
+              node[adder, anchor=left](addx){};
+        \draw (addx.left) ++(-0.25,0) node[above]{$+$}; % +
+        \draw (addx.south) ++(0,-0.25) node[left]{$-$}; % -
+        \draw (addx.right) to[short] ++(1,0) node[inputarrow]{}
+              node[twoportshape, anchor=left, t=$\int$](intx){};
+        \draw (intx.right) to[short] ++(1,0) node[inputarrow]{}
+              node[twoportshape, anchor=left, t={\scriptsize ADC}](adc){};
+        % Output
+        \draw (adc.right) to[short] ++(1,0) node[inputarrow]{} node[right]{$S^*_{n}$};
+        % Feedback
+        \draw (adc.south) to[short] ++(0,-1) node[inputarrow, rotate=-90]{}
+              node[twoportshape, anchor=north, t={\scriptsize DAC}](dac){};
+        % FB-X
+        \draw (dac.left) to[short, -*] (dac.left-| addx) coordinate(fdx)
+              to[short] (addx.south) node[inputarrow, rotate=90]{};
+        % FB-...
+        \draw (fdx) to[short] (fdx-| b) coordinate(fbb);
+        \draw[thick,dotted] (fbb) ++(-0.25,0) -- ++(-0.3,0) ++(-0.25,0) coordinate(fba);
+        % FB-b
+        \draw (fba) to[short, -*] (fba-| addb) coordinate(fbb)
+              to[short] (addb.south) node[inputarrow, rotate=90]{};
+        % FB-a
+        \draw (fbb) to[short] (fbb-| add) to[short] (add.south) node[inputarrow, rotate=90]{};
+    \end{circuitikz}
+    \caption{A high-order DSM.}
+    \label{fig:fig:hodsm}
+\end{figure}
 
 Figure \ref{fig:cb_adc} shows a simple charge balance ADC circuit. Where
 $\Delta$ is the input into the integrator and $\Sigma$ is the output of the
 first opamp. $V_{ref}$ is usually replaced with current source or a Digital to
 Analog Converter (DAC). This switches between two voltages, one or minus one
-volt.
+volt.\cite{vid:odsm}
 
 \begin{figure}[H]
     \centering
@@ -61,7 +395,7 @@ volt.
         (OATh.out) -- ++(1,0)
         node[latch, anchor=pin 1](DFF) {}
         (DFF.pin 6) to[short, -*] ++(1,0) coordinate(OUT)
-        to[short, -o] ++(1.5,0) node[above]{$OUT$}
+        to[short, -o] ++(1.5,0) node[above]{$D_{out}$}
 
         % ADC
         (OUT) -- (CA-| OUT) node[spdt, yscale=-1] (sw) {}
@@ -81,7 +415,7 @@ volt.
         \draw[green, thin] (11.75,2) rectangle +(3,3)
         ({11.75+3/2},2) node[above]{DAC};
     \end{circuitikz}
-    \caption{Charge Balance ADC}
+    \caption{Charge Balance ADC.\cite{vid:cb_dsm_adc}}
     \label{fig:cb_adc}
 \end{figure}
 
@@ -99,7 +433,7 @@ Figure \ref{fig:dsm_a} shows a first-order delta-sigma modulator, a simplificati
         -- ++(0,-2) coordinate(dac) to[twoport, >, t={\scriptsize DAC}] (dac-| mix) -- (mix.south) node[inputarrow, ,rotate=90] {}
         (mix.south east) node[below] {$-$}
         (out) -- ++(1,0) node[twoportshape, anchor=left, t=\scriptsize DF](dflt) {} node[inputarrow] {}
-        (dflt.right) -- ++(1,0) node[inputarrow]{} node[above]{Output};
+        (dflt.right) -- ++(1,0) node[inputarrow]{} node[above]{$D_{out}$};
         \draw (mix.north) +(0,0.5) node[]{\LARGE$\Delta$};
         \draw (amp.north) +(0,0.5) node[]{\LARGE$\Sigma$};
         \draw (dflt.north) +(0,0.5) node[]{Digital Filter};
@@ -108,4 +442,76 @@ Figure \ref{fig:dsm_a} shows a first-order delta-sigma modulator, a simplificati
     \label{fig:dsm_a}
 \end{figure}
 
+Delta-Sigma Conversion, modulator is clock twice the Nyquist frequency $2f_{max}$.
+
+$s(t)$, $f \leq f_{max}$ to analog modulator outputs bitstream
+$f_{bit} = \mathrm{OSR} \cdot 2 \cdot f_{max}$ to digital lowpass filter outputs
+digital signal with n-bit conversions as $f_s = 2f_{max}$. OSR is oversampling rate.
+
+Example, we have an input audio signal into the delta sigma modulator with $f_s = 48 \mathrm{kHz}$, $\mathrm{OSR} = 64$.
+$f_{bit} = \mathrm{OSR} \cdot f_s$. Results to 4.072 MSaps. With OSR at 64, we have made 6 bits ADC.
+
+\[
+    6\ \mathrm{bits} = 2^6 = 64
+\]
+
+Noise Shaping Model in Frequency Domain
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=0.8, transform shape]
+        \draw (0,0) node[above](in) {$x$} to[short] ++(1,0) node[inputarrow] {}
+        node[adder, anchor=left](add) {}
+        (add.right) to[short] ++(1.5,0) node[inputarrow] {}
+        node[dflowpass, anchor=left](lp) {}
+        (lp.right) to[short] ++(1.5,0) node[inputarrow] {}
+        node[adder, anchor=left](noise) {}
+        (noise.right) to[short, -*] ++(1,0) coordinate(nout) to[short] ++(1,0) node[inputarrow] {}
+        node[above]{$y$}
+        (nout) to[short] ++(0,-2) coordinate(back) to[short] (back-| add)
+        to[short] (add.south) node[inputarrow, rotate=90] {}
+        (add.south east) node[below] {$-$};
+
+        % Noise q input
+        \draw (noise) +(0,-1) coordinate(q) to[short] (noise.south) node[inputarrow, rotate=90] {}
+        (q) node[below]{$Q(s)$};
+
+        \draw (add) +(0,1.5) node[]{\parbox{2cm}{\centering Difference Amplifier}};
+        \draw (lp) +(0,1.5) node[]{\parbox{2cm}{\centering Integrator}};
+        \draw (noise) +(0,1.5) node[]{\parbox{1cm}{\centering 1-bit ADC}};
+        \draw (lp) +(0,-0.75) node[below]{$H(s) = \frac{1}{s}$};
+    \end{circuitikz}
+    \caption{Block Diagram for Noise Shaping Model}
+    \label{fig:nsm_fd}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=1, transform shape]
+        % Axis
+        \draw (0,0) -- (7.5,0) node[inputarrow] {} node[anchor=north west] {$x$};
+        \draw (0,0) -- (0,4) node[inputarrow, rotate=90] {} node[anchor=south east] {$y$};
+        % Axis Label
+        \draw (4,-0.25) node[below]{\scriptsize\textbf{frequency}};
+        \draw (-0.25,2) node[above, rotate=90]{\scriptsize\textbf{gain}};
+        % Lowpass
+        \draw[blue] (0,3) -- ++(4.75,0) -- ++(2.25,-1.25);
+        % Highpass (noise)
+        \draw[red] (0,0) -- ++(5.5,3) -- ++(1.5,0);
+        % Signal
+        \draw[dashed] (1.5,0) -- ++(0, 3.25);
+        % Sampling frequency
+        \draw (5.125, 0.1) -- (5.125, -0.1)
+        node[below]{\scriptsize$\omega_{clk}$};
+        % Signal Label
+        \draw ({1.5/2},1.75) node[rotate=90]{\scriptsize SIGNAL};
+        % Noise Label
+        \draw ({1.5 + (4.75 - 1.5)/2},0.75) node[]{\scriptsize NOISE};
+    \end{circuitikz}
+    \caption{Noise Shaping Model in Frequency Domain}
+    \label{fig:nsm_fd_g}
+\end{figure}
+
+\newpage
+\printbibliography
 \end{document}
