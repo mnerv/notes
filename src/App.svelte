@@ -27,7 +27,7 @@
   })
 </script>
 
-<main class="h-full p-4 pb-32 md:w-[512pt] mx-auto md:items-center">
+<main class="p-4 pb-32 md:w-[512pt] mx-auto md:items-center">
   <h1 class="text-3xl font-bold mb-5">Notes</h1>
   <div class="rounded-md overflow-hidden dark:bg-zinc-800 bg-zinc-100 w-full">
     {#each trees as tree}
