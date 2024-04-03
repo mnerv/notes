@@ -111,6 +111,19 @@
         \pgfusepath{draw}
     }
 }
+% \ctikzset{tripoles/op amp/width/.initial=.8}
+% \pgfcircdeclarebipole{}{\ctikzvalof{bipoles/op amp/width}}{opamp}{\ctikzvalof{bipoles/op amp/width}}{
+%     \pgf@circ@res@step = \ctikzvalof{bipoles/op amp/width}\pgf@circ@Rlen
+%     \pgf@circ@mid@left = \pgf@circ@res@left
+%     \pgf@circ@mid@right = \pgf@circ@res@right
+%     \pgf@circ@mid@up = \pgf@circ@res@up
+%     \pgf@circ@mid@down = \pgf@circ@res@down
+%     \pgfpathmoveto{\pgfpoint{\pgf@circ@mid@left}{\pgf@circ@mid@up}}
+%     \pgfpathlineto{\pgfpoint{\pgf@circ@mid@right}{\pgf@circ@mid@up}}
+%     \pgfpathmoveto{\pgfpoint{\pgf@circ@mid@left}{\pgf@circ@mid@down}}
+%     \pgfpathlineto{\pgfpoint{\pgf@circ@mid@right}{\pgf@circ@mid@down}}
+%     \pgfusepath{draw}
+% }
 \makeatother
 
 \geometry{
@@ -177,6 +190,14 @@
     title = {{Analog-to-Digital Converters (ADC) - Charge-Balancing and Delta-Sigma ADC}},
     url = "https://youtu.be/M5Vx-X66seg",
     urldate = {2024-03-30}
+}
+
+@misc{vid:dsadc,
+    author = {IFE - TU Graz},
+    year = {2021},
+    title = {{Analog-to-Digital Converters (ADC) - Dual Slope and Charge-Balancing ADC}},
+    url = "https://youtu.be/f-6shAZL4Ak",
+    urldate = {2024-03-04}
 }
 
 @misc{vid:odsm,
@@ -364,7 +385,7 @@ A higher-order DSMs is describe by Tewksbury and Hallock in 1978 shown in figure
         \draw (fbb) to[short] (fbb-| add) to[short] (add.south) node[inputarrow, rotate=90]{};
     \end{circuitikz}
     \caption{A high-order DSM.}
-    \label{fig:fig:hodsm}
+    \label{fig:hodsm}
 \end{figure}
 
 Figure \ref{fig:cb_adc} shows a simple charge balance ADC circuit. Where
@@ -398,9 +419,10 @@ volt.\cite{vid:odsm}
         to[short, -o] ++(1.5,0) node[above]{$D_{out}$}
 
         % ADC
-        (OUT) -- (CA-| OUT) node[spdt, yscale=-1] (sw) {}
+        (CA-| OUT) node[spdt, yscale=-1] (sw) {}
         (sw.out 1) -- ++(1,0) -- ++(0,-0.5) node[rground]{}
         (sw.out 2) -- ++(0.5,0) node[right] {$V_{ref}$}
+        (sw) ++(0,-0.5) to[short] (OUT)
 
         % Resistor
         (CA) to[short] (CA-| OA.out) to[R=$R$] (sw.in);
@@ -510,6 +532,61 @@ Noise Shaping Model in Frequency Domain
     \end{circuitikz}
     \caption{Noise Shaping Model in Frequency Domain}
     \label{fig:nsm_fd_g}
+\end{figure}
+
+Dual Slope ADC.\cite{vid:dsadc}
+
+\begin{figure}[H]
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \begin{circuitikz}[scale=0.64, transform shape]
+            \ctikzset{european resistors};
+            \ctikzset{bipoles/cuteswitch/thickness=0.25}
+            \draw (0,0) node[op amp](int){};
+            % Input
+            \draw (int.-) to[short, -*] ++(-0.5,0) coordinate(in-);
+            \draw (int.+) to[short] ++(-0.5,0)
+                to[short] ++(0,-1) coordinate(g1) node[ground]{};
+            \draw (in-) ++(-2.5,0)
+                to[short, -*] ++(-1,0) coordinate(rin);
+            \draw (rin) to[R=$R$] (in-);
+            \draw (rin) to[short] ++(0,1) to[short] ++(-0.5,0)
+                node[cuteopenswitchshape, anchor=out](s2){}
+                (s2.in) to[short,-o] ++(-0.64,0) node[left]{$V_{in}$};
+            \draw (rin) to[short] ++(0,-1) to[short] ++(-0.5,0)
+                node[cuteopenswitchshape, anchor=out](s3){}
+                (s3.in) to[short,-o] ++(-0.64,0) node[left]{$-V_{ref}$};
+            % Output OpAmp1
+            \draw (int.out) to[short,-*] ++(0.5,0) coordinate(intout);
+            \draw (in-) to[short,-*] ++(0,1.5) coordinate(top);
+            \draw (top) to[C=$C$] (top-| intout) coordinate(ctoout)
+                to[short] (intout);
+            \draw (top) to[short] ++(0,1.75) coordinate(tops1)
+                to[cute open switch, n=s1] (tops1-| intout)
+                to[short, -*] (ctoout)
+                (s1.mid) ++(0,0.16) node[above]{$S1$};
+            % Input OpAmp2
+            \draw (intout) to[short] ++(0.5,0)
+                node[op amp, noinv input up, anchor=+](in2){};
+            \draw (in2.-) to[short] ++(-0.5,0) coordinate(g2) to[short] (g2|- g1) node[ground]{};
+            \draw (in2.out) to[short] ++(0.5,0) coordinate(in2out);
+            \draw (in2out) node[draw, minimum width=2cm, minimum height=1.5cm, anchor=west](cl) {\parbox{1.5cm}{\centering Control Logic}};
+            \draw (cl.north) to[short] ++(0,1) node[above]{CLK};
+            \draw (cl.east) to[short] ++(1,0) node[right]{$D_{out}$};
+        \end{circuitikz}
+        \caption{Simplify Schematic of Dual Slope Converter}
+    \end{subfigure}
+    \begin{subfigure}[t]{1\textwidth}
+        \centering
+        \begin{circuitikz}[scale=1, transform shape]
+            % Axis
+            \draw (0,0) -- (10,0) node[inputarrow] {} node[anchor=north west] {$t$};
+            \draw (0,-0.25) -- (0,4) node[inputarrow, rotate=90] {} node[anchor=south east] {$\mathrm{V}$};
+        \end{circuitikz}
+        \caption{Dual Slope Charge Diagram}
+    \end{subfigure}
+    \caption{Dual Slope ADC}
+    \label{fig:dsint}
 \end{figure}
 
 \newpage
