@@ -29,25 +29,64 @@
 
 \subsection{Computer Architectures}
 
-\subsubsection{General Architecture}
+Commonly component inside a computer architectures are inputs, outputs, memory,
+arithmetic and logic unit (ALU) and a control unit.
 
-Memory
+\subsubsection{Input}
 
-ALU
+An input component handles all input into the processor. This part might be a
+mouse or keyboard for human interaction or other type of input for example
+communication line to another computer.
 
-Control Unit
+\subsubsection{Output}
 
-Registers
+The output is a way for the computer to give the result of a computation. For
+example showing something on the screen.
 
-Intterupts
+\subsubsection{Memory}
 
-Cache Memory
+Computer's memory is one of critical part as this might store the intruction on
+how to handle input and outputs. This can also store its current state that
+might be required to do more computation.
 
-Pipelining
+\subsubsection{Arithmetic and Logic Unit (ALU)}
 
-CISC/RISC
+This component performance calculation like the arithmetic operations and
+bitwise operations on binary numbers. This part is what makes a computer
+compute.
 
-Bus
+\subsubsection{Control Unit}
+
+To coordinate everything, the control unit (CU) directs all operation on the
+processor. Typical this works by using signal lines on different modules and a
+decoder to decide for example if the data it is looking at is an instruction.
+An instruction can be inside a memory and when read the CU have already decoder
+ready to handles what modules to activate to perform the instruction.
+
+\subsubsection{Registers}
+
+Registers are the internal component inside a processor. They store temporary
+data, usually between calculations and before moving the data around. Commonly
+found registers are
+
+\begin{itemize}
+    \item Instruction Register (IR)
+    \item Program Counter (PC)
+    \item General Purpose Registers (GPR)
+    \item Memory Address Register (MAR)
+    \item Memory Data Register (MDR)
+\end{itemize}
+
+
+% Intterupts
+
+% Cache Memory
+
+% Pipelining
+
+% CISC/RISC
+
+% Bus
 
 \subsubsection{Different Type of Systems}
 
