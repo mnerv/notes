@@ -24,6 +24,19 @@
 }
 \setcounter{secnumdepth}{0}  % Disable section numbering
 
+\begin{filecontents}{doit.bib}
+@misc{wiki:osi,
+    author = "{Wikipedia contributors}",
+    title = "OSI model --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2024",
+    url = "https://en.wikipedia.org/w/index.php?title=OSI_model&oldid=1219778555",
+    note = "[Online; accessed 24-April-2024]"
+}
+\end{filecontents}
+\addbibresource{doit.bib}
+
+% https://www-net.cs.umass.edu/kurose-ross-ppt-6e/
+
 \begin{document}
 \section{Dator- och internetteknik}
 
@@ -106,5 +119,50 @@ Single Instruction and Multiple Data Stream
 
 Multiple Instruction and Single Data Stream
 
+\subsection{Computer Network}
+
+\subsubsection{OSI Model}
+
+The Open Systems Interconnection (OSI) model is reference model from the
+International Organization for Standardization (ISO) that provide a common basis
+for the coordiation of standards development for systems interconnection. OSI
+model is usually describe in layers, Application layer, Presentation layer,
+Session layer, Transport layer, Network layer, Data link layer, and Physical
+layer. See table \ref{tb:osi} for layer name, description and example protocols.\cite{wiki:osi}
+
+Modern networking architecture don't follow strictly the OSI model.
+
+\begin{table}[H]
+    \caption{OSI Layer}
+    \centering
+    \begin{tabular}{| c | c | c |}
+        \hline
+        Layer       & Description & Protocols                       \\
+        \hline\hline
+        Application &             & HTTP, SSH, Telnet, DHCP         \\
+        \hline
+        Presenation &             &                                 \\
+        \hline
+        Session     &             &                                 \\
+        \hline
+        Transport   &             & TCP, UDP, SCTP                  \\
+        \hline
+        Network     &             &                                 \\
+        \hline
+        Data link   &             & ARP                             \\
+        \hline
+        Physical    &             & RS-232, IEEE 802.3, IEEE 802.11 \\
+        \hline
+    \end{tabular}
+    \label{tb:osi}
+\end{table}
+
+\subsection{Routing Algorithms}
+
+Common routing algorithms in computer network are Dijkstra's algorithm,
+Distance-Vector (DV) algoritm and Hierarchical routing.
+
+\newpage
+\printbibliography
 \end{document}
 
