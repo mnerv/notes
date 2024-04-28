@@ -64,6 +64,7 @@ generate_file_index() {
   input_deps=$(printf "$input_deps\n" | sort -u)
   for path in $input_deps
   do
+    # FIXME: Can't handle relative path ./
     esc_path=$(printf "$path\n" | sed -r 's/\//\\\//')
     registry_data=$(printf "$registry_data\n" | sed -r "s/^.*$esc_path//")
   done
