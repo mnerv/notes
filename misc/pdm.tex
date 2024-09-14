@@ -49,7 +49,7 @@
     \anchor{right}{\pgfpoint{0.5cm}{0cm}}
     \backgroundpath{
         % Draw the switch shape (rectangle with diagonal lines)
-        \pgfsetlinewidth{1pt}
+        \pgfsetlinewidth{0.85pt}
         \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
         \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
         \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
@@ -88,6 +88,47 @@
         \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
         \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
         \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantamp}{
+    \inheritsavedanchors[from=op amp]
+    \inheritanchorborder[from=op amp]
+    \inheritanchor[from=op amp]{center}
+    \inheritanchor[from=op amp]{+}
+    \inheritanchor[from=op amp]{-}
+    \inheritanchor[from=op amp]{out}
+    \inheritanchor[from=op amp]{up}
+    \inheritanchor[from=op amp]{down}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+        \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
+        \pgfpathclose
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{decimation}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0.0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0.0cm}}
+    \anchor{top}{\pgfpoint{0.0cm}{0.5cm}}
+    \anchor{bot}{\pgfpoint{0.0cm}{-0.5cm}}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathmoveto{\pgfpoint{-0.30cm}{-0.185cm}}
+        \pgfpathlineto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{-0.185cm}}
         \pgfusepath{draw}
     }
 }
@@ -212,8 +253,8 @@
 
 @article{article:dsm,
     author={Razavi, Behzad},
-    journal={IEEE Solid-State Circuits Magazine}, 
-    title={The Delta-Sigma Modulator [A Circuit for All Seasons]}, 
+    journal={IEEE Solid-State Circuits Magazine},
+    title={The Delta-Sigma Modulator [A Circuit for All Seasons]},
     year={2016},
     volume={8},
     number={2},
@@ -250,6 +291,57 @@ technique call ''quantization noise shaping''.\cite{wiki:dsm} Noise shaping's
 purpose is to increase the apparent signal-to-noise ratio of the resultant
 signal. It achieve this functionality by altering the spectral shape of
 the error that is introduced by dithering and quantization.\cite{wiki:ns}
+
+\subsection{PDM to PCM}
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=1, transform shape]
+        \draw (0,0) coordinate(origin) to[short, -o] ++(-1, 0) node[left]{$V_{in}$};
+        \draw (origin) node[inputarrow]{} node[dflowpass, anchor=left](alp){};
+        \draw (alp.right) to[short] ++(1,0) node[inputarrow]{} node[adder, anchor=left](sum){};
+        \draw (sum.left) ++(-0.25,0) node[above]{$+$}; % +
+        \draw (sum.south) ++(0,-0.25) node[left]{$-$}; % -
+        \draw (sum.right) to[short] ++(1,0) node[inputarrow]{} node[twoportshape, anchor=left, t=$\int$](sigma){};
+        \draw (sigma.right) to[short] ++(1,0) node[inputarrow]{} node[quantizer, anchor=left](quant){};
+        \draw (quant.right) to[short, -*] ++(1,0) coordinate(quantsplit) to[short] ++(1,0) node[inputarrow]{} node[right]{$D_{out}$};
+        \draw (quantsplit) to[short] ++(0,-1.5) coordinate(qsbot) to[short] (qsbot-| sum) coordinate(fb);
+        \draw (fb) to[short] (sum.south) node[inputarrow, rotate=90]{};
+        % \draw (quant.top) ++(0,0.5) coordinate(clkpos) to[short] (quant.top) node[inputarrow, rotate=-90]{}
+        %       (clkpos) node[right]{\tiny CLK};
+        % Text Labels
+        \draw (alp) ++(0,1.25) node[above]{\parbox{2cm}{\centering\scriptsize Analog Lowpass filter}};
+        \draw (sum) ++(0,1.25) node[above]{\parbox{2cm}{\centering\Large $\Delta$}};
+        \draw (sigma) ++(0,1.25) node[above]{\parbox{2cm}{\centering\Large $\Sigma$}};
+        \draw (quant) ++(0,1.25) node[above]{\parbox{1.5cm}{\centering\scriptsize 1-bit Quantizer}};
+        \draw (fb) node[left]{$V_{f}$};
+    \end{circuitikz}
+    \caption{Simplified Logical Steps Converting Analog to PDM Digital Signal using DSM.}
+    \label{fig:adc2pdm}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{circuitikz}[scale=1, transform shape]
+        \draw (0,0) coordinate(origin) to[short, -o] ++(-1, 0) node[left]{$D_{in}$};
+        \draw (origin) node[inputarrow]{} node[dflowpass, anchor=left](dlp){};
+        \draw (dlp.right) to[short] ++(1,0) node[inputarrow]{}
+              node[decimation, anchor=left](deci){} (deci.center) ++(0.08cm,0) node[]{M};
+        \draw (deci.right) to[short] ++(1,0) node[inputarrow]{}
+              node[dfhighpass, anchor=left](dhp){};
+        \draw (dhp.right) to[short] ++(1,0) node[inputarrow]{}
+              node[twoportshape, anchor=left, t={x}](gain){};
+        \draw (gain.right) to[short] ++(1,0) node[inputarrow]{}
+              node[right]{\small PCM};
+        % Text Labels
+        \draw (dlp) ++(0, 1) node[above]{\parbox{2cm}{\centering\scriptsize Digital Lowpass filter}};
+        \draw (deci) ++(0, 1) node[above]{\parbox{2cm}{\centering\scriptsize Decimation}};
+        \draw (dhp) ++(0, 1) node[above]{\parbox{2cm}{\centering\scriptsize Digital Highpass filter}};
+        \draw (gain) ++(0, 1) node[above]{\parbox{2cm}{\centering\scriptsize Gain}};
+    \end{circuitikz}
+    \caption{Simplified Logical Steps Converting PDM Digital Signal to Analog Signal.}
+    \label{fig:pdm2pcm}
+\end{figure}
 
 \subsection{Delta-Sigma Modulator}
 
@@ -580,6 +672,7 @@ Dual Slope ADC.\cite{vid:dsadc}
     \end{subfigure}
     \begin{subfigure}[t]{1\textwidth}
         \centering
+        % TODO: Dual Slope Charge Diagram
         \begin{circuitikz}[scale=1, transform shape]
             % Axis
             \draw (0,0) -- (10,0) node[inputarrow] {} node[anchor=north west] {$t$};
@@ -590,6 +683,7 @@ Dual Slope ADC.\cite{vid:dsadc}
     \caption{Dual Slope ADC}
     \label{fig:dsint}
 \end{figure}
+
 
 \newpage
 \printbibliography
