@@ -41,8 +41,8 @@ EOF
 generate_file_index() {
   # Add files
   printf "" > $registry_path
-  find ./analys_b | grep .tex >> $registry_path
-  find ./linjär_algebra | grep .tex >> $registry_path
+  find ./maths | grep .tex >> $registry_path
+  find ./dsp | grep .tex >> $registry_path
   find ./misc | grep .tex >> $registry_path
 
   # Filter out dependencies from registry database
@@ -182,19 +182,25 @@ postbuild() {
   tar -czf archive.tar.gz pdf
   cd $root_dir
 
-  if [[ $is_production = true ]]; then
-    if ! [[ -e "$dist_dir" ]]; then
-      mkdir -p "$dist_dir"
-    fi
-
-    if [[ -e "$dist_dir/pdf" ]]; then
-      rm -rf "$dist_dir/pdf"
-    fi
-
-    cp -rf "$build_dir/pdf" "$dist_dir"
-    cp "$registry_path" "$dist_dir/pdf"
-    cp "$build_dir/archive.tar.gz" "$dist_dir/pdf"
+  if [[ $is_production = false ]]; then
+    return
   fi
+
+  if ! [[ -e "$dist_dir" ]]; then
+    mkdir -p "$dist_dir"
+  fi
+
+  if [[ -e "$dist_dir/pdf" ]]; then
+    rm -rf "$dist_dir/pdf"
+  fi
+
+  if [[ -e "web/dist" ]]; then
+    cp -rf web/dist/* dist
+  fi
+
+  cp -rf "$build_dir/pdf" "$dist_dir"
+  cp "$registry_path" "$dist_dir/pdf"
+  cp "$build_dir/archive.tar.gz" "$dist_dir/pdf"
 }
 
 parse_args $@

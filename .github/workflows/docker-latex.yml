@@ -47,17 +47,19 @@ jobs:
 
     - name: Build webapp
       run: |
+        cd web
         npm i
         npm run build
+        cd ..
 
     - name: Build pdf using docker image
       run: |
-        docker run --rm -v "$(pwd):/home/porter/app" --name maths --user root --hostname latex latex sh ./deploy.sh --parallel --production --dist-dir="dist" --cache-uri="https://maths.nrv.nu/pdf/archive.tar.gz"
+        docker run --rm -v "$(pwd):/home/porter/app" --name maths --user root --hostname latex latex sh ./deploy.sh --parallel --production --dist-dir="web/dist" --cache-uri="https://maths.nrv.nu/pdf/archive.tar.gz"
 
     - name: Upload site artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: "dist${{ steps.pages.outputs.base_path }}"
+        path: "web/dist${{ steps.pages.outputs.base_path }}"
 
   deploy:
     environment:

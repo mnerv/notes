@@ -4,8 +4,8 @@ build
 dist
 dist-ssr
 node_modules
-public/*.tar.gz
-public/pdf
+web/public/*.tar.gz
+web/public/pdf
 
 # Images/PDFs
 *.pdf

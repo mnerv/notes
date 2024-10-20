@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{spalign}
+\usepackage{xfrac}
+\usepackage{parskip}
+\usepackage{float}  % figure[H]
+\usepackage[english]{babel}
+\usepackage[style=ieee,backend=biber,urldate=iso,date=iso]{biblatex}
+\usepackage[breaklinks=true,bookmarks=true,hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{subcaption}
+\usepackage[yyyymmdd]{datetime}
+\usetikzlibrary {arrows.meta}
+\pgfplotsset{compat=newest,compat/show suggested version=false}
+
+% Custom shape
+\makeatletter
+\pgfdeclareshape{dflowpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    % Add more custom anchors if needed
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.85pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfhighpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfbandpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantizer}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantamp}{
+    \inheritsavedanchors[from=op amp]
+    \inheritanchorborder[from=op amp]
+    \inheritanchor[from=op amp]{center}
+    \inheritanchor[from=op amp]{+}
+    \inheritanchor[from=op amp]{-}
+    \inheritanchor[from=op amp]{out}
+    \inheritanchor[from=op amp]{up}
+    \inheritanchor[from=op amp]{down}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+        \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
+        \pgfpathclose
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\makeatother
+
+\geometry{
+    a4paper,
+    hmargin=2.54cm,
+    tmargin=1.27cm,
+    bmargin=1.27cm,
+    includeheadfoot
+}
+\setcounter{secnumdepth}{0}  % Disable section numbering
+
+\begin{filecontents}{dsp.bib}
+@book{mcclellan2015dsp,
+  title     = {DSP First},
+  author    = {James H. McClellan and Ronald W. Schafer and Mark A. Yoder},
+  year      = {2015},
+  edition   = {Second, Global},
+  publisher = {Pearson},
+  isbn      = {9780136019251}
+}
+\end{filecontents}
+\addbibresource{dsp.bib}
+
+\begin{document}
+
+\section{Digital Signal Processing}
+
+\newpage
+\printbibliography
+\end{document}
