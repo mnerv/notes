@@ -36,7 +36,7 @@
   </div>
   <div class='fixed bottom-0 right-0 p-4 hover:text-blue-nordic'>
     <a class='mx-auto hover:underline hover:text-blue-400 transition-all duration-150 font-light'
-      href='https://github.com/mnerv/maths'
+      href='https://github.com/mnerv/notes'
       title='Open Github repository'
       target='_blank'>
       <Icon icon="bi:github" />

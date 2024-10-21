@@ -1,4 +1,4 @@
-# Math Notes
+# Notes
 
 Alpine container with LaTeX and neovim installation.
 
@@ -10,12 +10,16 @@ Build docker image.
 docker build -t latex .
 ```
 
+```sh
+docker build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -t latex .
+```
+
 ## Run
 
 Start latex docker image.
 
 ```sh
-docker run -it --rm -v "$(pwd):/home/porter/app" --hostname latex --name maths latex
+docker run -it --rm -v "$(pwd):/app" --name maths latex
 ```
 
 ## Python Environment

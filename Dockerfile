@@ -1,10 +1,16 @@
 FROM alpine:latest
 
-RUN apk update && apk upgrade;\
-    apk add doas;\
-    adduser -g 'Porter' porter;\
-    echo "porter:" | chpasswd;\
-    adduser porter wheel;\
+# Set environment variables for UID and GID (can be passed at runtime)
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+# Update packages and add required utilities
+RUN apk update && apk upgrade; \
+    apk add doas; \
+    addgroup -g ${GROUP_ID} porter; \
+    adduser -D -u ${USER_ID} -G porter -g 'Porter' porter; \
+    echo "porter:" | chpasswd; \
+    addgroup porter wheel; \
     echo "permit persist :wheel" > "/etc/doas.d/doas.conf"
 
 # Run system config script
@@ -24,18 +30,17 @@ COPY compile.sh /home/porter
 RUN chown -R porter /home/porter/.docker &&\
     chown porter /home/porter/compile.sh
 
+RUN mkdir -p /app
+RUN chown -R porter /app
+
 USER porter
 WORKDIR /home/porter
-
-## Set zsh as default shell
-#RUN echo "porter:" | chsh -s $(which zsh) porter
 
 # Run setup.sh as porter
 RUN sh .docker/setup.sh
 
 # Set final working directory
-RUN mkdir -p /home/porter/app
-WORKDIR /home/porter/app
+WORKDIR /app
 
 CMD ["zsh"]
 
