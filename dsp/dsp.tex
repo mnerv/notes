@@ -16,6 +16,7 @@
 \usepackage{pgfplots}
 \usepackage{circuitikz}
 \usepackage{subcaption}
+\usepackage{csquotes}
 \usepackage[yyyymmdd]{datetime}
 \usetikzlibrary {arrows.meta}
 \pgfplotsset{compat=newest,compat/show suggested version=false}
@@ -137,6 +138,279 @@
 \begin{document}
 
 \section{Digital Signal Processing}
+
+Signal is something that carry information, for example audio signals, video or
+image signals. An important point is that signals can take many equivalent forms
+or representations. For example, a speech signal is produced as an acoustic
+signal, but it can be converted to an electrical signal by a microphone, and
+then to a string of numbers as in digital audio recording.
+
+The term \textbf{system} for our purposes, is something that can manipulate,
+change, record, or transmit signals. For example, a DVD recording stores or
+represents a movie or a music signal as a sequence of numbers. A DVD player is
+a system for converting the numbers stored on the disc (i.e., the numerical
+representation of the signal) to a video and/or acoustic signal. In general,
+systems operate on signals to produce new signals or new signal representations.
+\cite{mcclellan2015dsp}
+
+\subsection{Mathematical Representation}
+
+\textbf{System}
+
+One-dimensional continuous-time system takes an input signal x(t) and produces
+a corresponding output signal y(t). This can be represented mathematically by
+
+\begin{equation}
+    y(t) = T\{x(t)\}
+\end{equation}
+
+which means that the input signal (waveform, image, etc.) is operated on by the
+system (symbolized by the operator $T$ ) to produce the output $y(t)$. Consider
+a system such that the output signal is the square of the input signal. The
+mathematical description of this system is
+
+\begin{equation}
+    y(t) = [x(t)]^2
+\end{equation}
+
+The system is a \textit{continuous-time system} (i.e., a system whose input and output
+are continuous-time signals). The discrete version where the signal are quantised is
+
+\begin{equation}
+    y[t] = (x[t])^2
+\end{equation}
+
+The implementation of the discrete- time squarer system would be trivial given
+a digital computer; one simply multiplies each discrete signal value by itself.
+
+In thinking and writing about systems, it is often useful to have a visual
+representation of the system. For this purpose, engineers use \textit{block diagrams}
+to represent operations performed in an implementation of a system and to show
+the interrelations among the many signals that may exist in an implementation of
+a complex system.
+
+\subsection{Sinusoids}
+
+General class of signals that are commonly called cosine signals or,
+equivalently, sine signals, which are also commonly referred to as cosine or
+sine waves, particularly when speaking about acoustic or electrical signals.
+Collectively, such signals are called sinusoidal signals or, more concisely,
+sinusoids. Sinusoidal signals are the basic building blocks in the theory of
+signals and systems.
+
+\begin{equation}
+x(t) = A \cos (\omega_0 t + \varphi)
+\end{equation}
+
+We define a continuous-time signal with independent variable $t$, a continuous
+real variable that represents time. $A$ is the \emph{amplitute}, $\omega_0$ the
+\textit{radian frequency}, and $\varphi$ the \emph{phase} of the cosine signal.
+
+\subsection{Sampling and Aliasing}
+
+Continuous waveforms like sinusoidal signals must be turned into vectors, or
+stream of numbers for digital signal processing. The computer sample values of
+the continuous-time signal at a constant rate such as. 48 000 samples/s. How
+many numbers per second are needed to adequately represent a continuous-time
+signal. The question boils down to finding the minimum rate for the
+constant-rate sampling.
+
+\begin{quote}
+The primary objective of our presentation is an understanding of the
+\emph{sampling theorem}, which states that when the \emph{sampling rate} is
+\emph{greater than twice} the \emph{highest frequency} contained in the spectrum
+of the \emph{analog signal}, the \emph{original signal} can be
+\emph{reconstructed exactly} from the samples.
+\end{quote}
+
+A signal whose spectrum has a finite highest frequency is called a
+\textit{bandlimited} signal, and theoretically, such a signal can be sampled and
+reconstructed without error. The reconstruction process must ''fill in'' the
+missing signal values between the sample times tn by constructing a smooth curve
+through the discrete-time sample values $x(t_n)$. Mathematicians call this
+process \textit{interpolation} because it may be represented as time-domain
+interpolation formula.
+
+\subsubsection{Sampling}
+
+A \emph{discrete-time signal} is represented mathematically by an indexed
+sequence of numbers. The numbers are stored digitally, and the signal values are
+held in memory locations, so they would be indexed by memory address. Values of
+the discrete-time signal are denoted as $x[n]$, where $n$ is the integer index
+indicating the order of the values in the sequence. The square brackets ``[ ]''
+enclosing the argument $n$ provide a notation that distinguishes between the
+continuous-time signal $x(t)$ and a corresponding discrete-time signal $x[n]$.
+
+Sample continuous-time signal at equally spaced time instants, $t_n = nT_s$:
+
+\begin{equation}
+    x[n] = x(nT_s), \qquad -\infty < n < \infty
+\end{equation}
+
+where $x(t)$ represents any continuously varying signal such as audio. The fixed
+time interval between samples, $T_s$, can also be expressed as a fixed
+\emph{sampling rate}, $f_s$ in samples/s:
+
+\begin{equation}
+    f_s = \frac{1}{T_s} \quad \mathrm{samples/s}
+\end{equation}
+
+Therefore, an alternative way to write the sequence is:
+
+\begin{equation}
+    x[n] = x\left(\frac{n}{f_s}\right)
+\end{equation}
+
+\subsubsection{Sampling Sinusoidal Signals}
+
+Sample $A \cos (\omega t + \varphi)$:
+
+\begin{align}
+x[n] &= x(nT_s) \\
+     &= A \cos (\omega n T_s + \varphi) \\
+     &= A \cos (\hat{\omega} n + \varphi)
+\end{align}
+
+where $\hat{\omega}$ is defined as:
+
+\begin{equation}
+\hat{\omega} = \omega T_s = \frac{\omega}{f_s}
+\end{equation}
+
+The signal $x[n]$ is a \emph{discrete-time cosine signal}, and $\hat{\omega}$ is
+its \emph{discrete-time frequency}. The ''hat'' is used to denote that this is a
+new frequency variable. It is a \emph{normalized} version of the continuous-time
+radian frequency with respect to the sampling frequency. Since $\omega$ has
+units of rad/s, the units of $\hat{\omega} = \omega T_s$ are radians, that is,
+$\hat{\omega}$ is a dimensionless quantity. This is entirely consistent with the
+fact that the index $n$ in $x[n]$ is dimensionless.
+
+\subsubsection{The concept of Aliases}
+
+A simple definition of the word alias would involve something like ''two names
+for the same person, or thing.'' When a mathematical formula defines a signal,
+that formula can act as a name for the signal.
+
+\subsubsection{Shannon Sampling Theorem}
+
+\begin{quote}
+A continuous-time signal $x(t)$ with frequencies no higher than
+$f_{\mathrm{max}}$ can be reconstructed exactly from its samples
+$x[n] = x(nT_s)$, if the samples are taken at a rate $f_s = \frac{1}{T_s}$ that
+is greater than $2f_{\mathrm{max}}$.
+\end{quote}
+
+The minimum sampling rate of $2f_{\mathrm{max}}$ is called the Nyquist rate (Nyquist limit).
+
+\subsection{FIR Filters}
+
+A filter is a system that is designed to remove some component or modify some
+characteristic of a signal. The \emph{finite impulse repsonse (FIR)} systems or
+FIR \emph{filters} are systems for which each output value is the sum of a
+finite number of weighted values of the input sequence. We define the basic
+input-output stucture of the FIR filter as time-domain computation based upon
+what is often called \emph{difference equation}. The unit impulse reponse of the
+filter is defined and shown to completely descibe the filer via the operation
+of convolution.
+
+\subsubsection{The Running-Average Filter}
+
+A simple but useful transformation of a discrete-time signal is to compute a
+\emph{running average} of two or more consecutive values of the sequence,
+thereby forming a new sequence of the average values. The \textbf{FIR} filter is
+a generalisation of the idea of running average.
+
+\subsubsection{Frequency Response of FIR Filters}
+
+The concept of the frequency response of an LTI FIR filter and show that the
+\emph{frequency response} and impulse response are uniquely related. All LTI
+systems possess this sinusoid-in gives \emph{sinusoid-out property}. The
+frequency-response function, when plotted over all frequencies, summarizes the
+response of an LTI system by giving the magnitude and phase change experienced
+by all possible sinusoids.
+
+\begin{equation}
+    H(e^{j\hat{\omega}}) = \sum_{k = 0}^{M} b_k e^{-j \hat{\omega} k} = \sum_{k = 0}^{M} h[k] e^{-j \hat{\omega} k}
+\end{equation}
+
+\subsection{Discrete-Time Fourier Transform}
+
+General concept of the discrete-time Fourier transform (DTFT) to the impulse
+response of the LTI(\emph{Linear-Time Invariant}) system.
+
+\begin{equation}
+    X(e^{j\hat{\omega}}) = \sum_{n = -\infty}^{\infty} x[n]e^{-j\hat{\omega}n}
+\end{equation}
+
+\subsubsection{Discrete Fourier Transform (DFT)}
+
+The objective here is to define a numerical Fourier transform called the
+discrete Fourier transform (or DFT) that results from taking frequency samples
+of the DTFT.
+
+\begin{equation}
+    X[k] = \sum_{n=0}^{N - 1} x[n] e^{-j(2\pi / N)kn}
+\end{equation}
+
+\begin{equation}
+    k = 0,\, 1,\, \dots,\, N - 1
+\end{equation}
+
+The \emph{Discrete Fourier Transform (DFT)} takes $N$ samples in the time domain
+and transforms them into $N$ values $X[k]$ in the \emph{frequency domain}.
+Typically, the values of $X[k]$ are \emph{complex}, while the values of $x[n]$
+are often \emph{real}, but $x[n]$ could also be complex.
+
+\subsection{Z-Transforms}
+
+Polynomials and rational functions play a significant role in the analysis of
+linear discrete-time systems. The key result is that FIR convolution is
+equivalent to polynomial multiplication. Common algebraic operations, such as
+\emph{multiplying}, \emph{dividing}, and \emph{factoring polynomials}, can be
+interpreted as \textbf{combining} or \textbf{decomposing} LTI systems.
+
+\subsection{Definition of $z$-Transforms}
+
+For a finite-length signal $x[n]$ with a set of signal values
+$\{x[0], x[1],\ \dots,\ x[L - 1]\}$, the signal can be expressed as:
+
+\begin{equation}
+    x[n] = \sum_{k = 0}^{L - 1} x[k] \delta[n - k]
+\end{equation}
+
+Each term in the summation, $x[k] \delta[n - k]$, represents the value $x[k]$ at
+the time index $n = k$, which is the only index where $\delta[n - k]$ is nonzero. 
+
+The $z$-transform of the signal $x[n]$ is defined by the formula:
+
+\begin{equation}
+    X(z) = \sum_{k = 0}^{L - 1} x[k]z^{-k}
+\end{equation}
+
+Here, $z$, the independent variable of the $z$-transform $X(z)$, is a complex
+number. In this equation, the signal values $\{x[0], x[1],\ \dots,\ x[L - 1]\}$
+are used as coefficients of a polynomial in $z^{-1}$. The exponent of $z^{-k}$
+indicates that the polynomial coefficient $x[k]$ corresponds to the
+$k^{\text{th}}$ value of the signal.
+
+Although this is the conventional definition of the $z$-transform, it is
+instructive to write $X(z)$ in the form:
+
+\begin{equation}
+    X(z) = \sum_{k = 0}^{L - 1} x[k](z^{-1})^{k}
+\end{equation}
+
+This emphasizes that $X(z)$ is simply a polynomial of degree $L - 1$ in the
+variable $z^{-1}$.
+
+\subsubsection{$z$-Transform of the Impulse Response}
+
+The second way to obtain a $z$-domain representation of an FIR filter is to take
+the $z$-transform of the impulse response:
+
+\begin{equation}
+    H(z) = \sum_{k = 0}^{M} h[k]z^{-k}
+\end{equation}
 
 \newpage
 \printbibliography
