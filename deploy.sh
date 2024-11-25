@@ -43,6 +43,7 @@ generate_file_index() {
   printf "" > $registry_path
   find ./maths | grep .tex >> $registry_path
   find ./dsp | grep .tex >> $registry_path
+  find ./ee | grep .tex >> $registry_path
   find ./misc | grep .tex >> $registry_path
 
   # Filter out dependencies from registry database
