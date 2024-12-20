@@ -41,9 +41,10 @@ EOF
 generate_file_index() {
   # Add files
   printf "" > $registry_path
-  find ./maths | grep .tex >> $registry_path
+  find ./cs | grep .tex >> $registry_path
   find ./dsp | grep .tex >> $registry_path
   find ./ee | grep .tex >> $registry_path
+  find ./maths | grep .tex >> $registry_path
   find ./misc | grep .tex >> $registry_path
 
   # Filter out dependencies from registry database
@@ -117,7 +118,7 @@ parse_args() {
 prebuild() {
   # clean
   if [[ $is_clean = true ]] && [[ -e "$build_dir" ]]; then
-    rm -rf $build_dir 
+    rm -rf $build_dir
   fi
   if [[ $is_clean = true ]] && [[ $is_production = true ]] && [[ -e "$dist_dir/pdf" ]]; then
     rm -rf "$dist_dir/pdf"
