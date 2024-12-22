@@ -37,6 +37,12 @@
       <FileTree {tree} />
     {/each}
   </div>
+  <div class="py-4 px-3 dark:text-gray-400 text-gray-500 flex space-x-2 my-auto">
+    <Icon icon="bi:filetype-pdf" class="my-auto text-base"/>
+    <p class="text-sm my-auto">
+      {registry.length}
+    </p>
+  </div>
   <div class='fixed bottom-0 right-0 p-4 hover:text-blue-nordic'>
     <a class='mx-auto hover:underline hover:text-blue-400 transition-all duration-150 font-light'
       href='https://github.com/mnerv/notes'

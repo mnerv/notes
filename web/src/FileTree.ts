@@ -8,9 +8,15 @@ export type NodeT = {
 }
 
 export function sortByType(list: NodeT[]): NodeT[] {
+  if (list === null || list.length == 0) return []
   const directory = list.filter(a => a.href === '')
   const files = list.filter(a => a.href !== '')
-  return [...directory, ...files]
+  const sortedList = [...directory, ...files]
+  // sort childrens
+  return sortedList.map(n => {
+    n.children = sortByType(n.children)
+    return n
+  })
 }
 
 export function sortByName(list: NodeT[]): NodeT[] {
