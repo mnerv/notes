@@ -9,8 +9,11 @@
   let trees: NodeT[] = []
 
   onMount(async () => {
-    const links = await fetch('./pdf/registry.txt')
-      .then(res => {
+    const links = await fetch('./pdf/registry.txt', {
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    }).then(res => {
         if (res.ok) return res.text()
         else throw new Error(`Can't download registry.txt`)
       })
