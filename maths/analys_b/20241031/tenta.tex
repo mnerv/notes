@@ -1,0 +1,106 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{spalign}
+\usepackage{xfrac}
+\usepackage{parskip}
+\usepackage{float}  % figure[H]
+\usepackage[style=ieee,backend=biber]{biblatex}
+\usepackage[breaklinks=true,bookmarks=true,hidelinks]{hyperref}
+\usepackage{tikz}
+
+\geometry{
+    a4paper,
+    hmargin=2.54cm,
+    tmargin=1.27cm,
+    bmargin=1.27cm,
+    includeheadfoot
+}
+\setcounter{secnumdepth}{0}  % Disable section numbering
+
+\begin{document}
+
+\begin{enumerate}
+    \item
+        \begin{enumerate}
+            \item Beräkna integralen
+
+            \[
+                \int_0^3 x \cdot \sqrt{16 + x^2} dx
+            \]
+
+            \item Beräkna integralen
+
+            \[
+                \int_0^3 \frac{1}{\sqrt{x^2 + 4}} dx
+            \]
+
+            \item Avgör om den generaliserade integralen
+                  $\displaystyle \int_0^\infty e^{-x} dx$ är konvergent och
+                  beräkna den i så fall.
+
+        \end{enumerate}
+
+    \item
+        \begin{enumerate}
+            \item Lös begynnelsevärdesproblemet $x \cdot y' + 3 \cdot y = 1$,
+                  $y(1) = 3$
+
+            \item Lös begynnelsevärdesproblemet $(1 + x^2) \cdot y' = e^{-y}$,
+                  $y(0) = 10$
+        \end{enumerate}
+
+    \item
+        \begin{enumerate}
+            \item Beräkna volymen av den kropp som uppkommer då ytan mellan
+                  kurvan $y = (1 + x)^{\frac{1}{4}}$, $0 \leq x \leq 3$ och
+                  $x$-axeln roterar kring $y$-axeln.
+
+                  \textit{Rita figur av ytan och besrkiv kort metoden du
+                          använder vid volymberäkningen.}
+
+            \item Bestäm gränsvärdet
+                $\displaystyle \lim_{x \to 0}\frac{\sqrt{1 + 4x^2} - 1}{x \cdot \ln(1 + 3x)}$
+                med hjälp av Maclaurinutveckling.
+        \end{enumerate}
+
+    \item Lös begynnelsevärdesproblemet $y'' + 4y' + 4y = \sin x$, $y(0) = 0$, $y'(0) = 0$
+
+    \item
+        \begin{enumerate}
+            \item Beräkna integralen
+                  $\displaystyle \int_0^1\frac{x}{x^3 - 3x^2 + 4} dx$
+
+              \item Ange för vilka $x$ serien
+                    $\displaystyle \sum_{k = 1}^{\infty}\left(\frac{1}{x - 1}\right)^k$
+                    konvergerar.
+
+                    Bestäm seriens summa för dessa $x$.
+
+              \item Visa att $\displaystyle |\cos x - 1 + \frac{x^2}{2}| \leq \frac{x^4}{24}$
+                    för alla $x$.
+        \end{enumerate}
+
+    \item
+        \begin{enumerate}
+            \item Beräkna längden av funtionskurvan
+                  $\displaystyle y = \frac{2}{3} \cdot x^{3/2}$, $0 \leq x \leq 8$.
+
+              \item I ett hus där värmesystemet har slutat att fungera sjunker
+                    temperaturen med en hastighet som antas vara proportionell
+                    mot skillnaden mellan inner- och yttertemperatur. Antag att
+                    yttertemperaturen är konstant $-10\degree$C och efter 4
+                    timmar har den sjunkit till $10\degree$C. Efter hur lång tid
+                    har temperaturen sjunkit till $5\degree$C? Svara exakt och
+                    med ett närmevärde där du utnyttjar att
+                    $\ln \frac{1}{2} \approx -0.7$ och
+                    $\ln \frac{2}{3} \approx -0.4$ när du beräknar närmevärdet.
+        \end{enumerate}
+\end{enumerate}
+
+\end{document}
+
