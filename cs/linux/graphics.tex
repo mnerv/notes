@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{spalign}
+\usepackage{xfrac}
+\usepackage{parskip}
+\usepackage{float}  % figure[H]
+\usepackage[english]{babel}
+\usepackage[style=ieee,backend=biber,urldate=iso,date=iso]{biblatex}
+\usepackage[breaklinks=true,bookmarks=true,hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{subcaption}
+\usepackage[yyyymmdd]{datetime}
+\usepackage{url}
+\usetikzlibrary {arrows.meta}
+\pgfplotsset{compat=newest,compat/show suggested version=false}
+
+% Custom shape
+\makeatletter
+\pgfdeclareshape{dflowpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    % Add more custom anchors if needed
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.85pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfhighpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfbandpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantizer}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantamp}{
+    \inheritsavedanchors[from=op amp]
+    \inheritanchorborder[from=op amp]
+    \inheritanchor[from=op amp]{center}
+    \inheritanchor[from=op amp]{+}
+    \inheritanchor[from=op amp]{-}
+    \inheritanchor[from=op amp]{out}
+    \inheritanchor[from=op amp]{up}
+    \inheritanchor[from=op amp]{down}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+        \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
+        \pgfpathclose
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{decimation}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0.0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0.0cm}}
+    \anchor{top}{\pgfpoint{0.0cm}{0.5cm}}
+    \anchor{bot}{\pgfpoint{0.0cm}{-0.5cm}}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathmoveto{\pgfpoint{-0.30cm}{-0.185cm}}
+        \pgfpathlineto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{-0.185cm}}
+        \pgfusepath{draw}
+    }
+}
+\makeatother
+
+\geometry{
+    a4paper,
+    hmargin=2.54cm,
+    tmargin=1.27cm,
+    bmargin=1.27cm,
+    includeheadfoot
+}
+\setcounter{secnumdepth}{0}  % Disable section numbering
+
+\begin{filecontents}{linux-graphics-stack.bib}
+@misc{navlgs,
+  author       = {{Pengutronix}},
+  title        = {{ELCE 2022: Navigating the Linux Graphics Stack}},
+  year         = {2022},
+  howpublished = {\url{https://youtu.be/WaF7mVhnhtE}},
+  note         = {Accessed: 2024-12-25}
+}
+\end{filecontents}
+\addbibresource{linux-graphics-stack.bib}
+
+\begin{document}
+\section{Linux Graphics Stack}
+
+\cite{navlgs}
+
+\subsection{Some Acronyms}
+\begin{verbatim}
+ls /sys/class/drm/card0-HDMI-A-1
+\end{verbatim}
+
+\begin{verbatim}
+ls /sys/kernel/debug/dri/0
+\end{verbatim}
+
+\begin{verbatim}
+echo 0x1ff > /sys/module/drm/parameters/debug
+\end{verbatim}
+\begin{itemize}
+    \item Wayland
+    \item DRI - Direct Rendering Infrastructure
+    \item DRM - Direct Rendering Manager
+    \item KMS - Kernel Mode Settings
+    \item FB - Frame Buffer
+    \item EGL
+    \item OpenGL
+\end{itemize}
+
+\subsection{Topics}
+
+\begin{itemize}
+    \item Pixel buffer onto display
+    \item Draw pixel into a pixel buffer
+    \item Compose multiple pixel buffers
+\end{itemize}
+
+\subsection{Display - Acronyms}
+
+\begin{itemize}
+    \item DRI - Direct Rendering Infrastructure
+
+        A framework in the X Window System that enables direct access to
+        graphics hardware, allowing applications to perform rendering without
+        the overhead of inter-process communication.
+
+    \item DRM - Direct Rendering Manager
+
+        A subsystem of the Linux kernel responsible for managing graphics
+        processing units (GPUs), providing an API for user-space programs to
+        perform operations like configuring display modes and rendering
+        graphics.
+
+    \item KMS - Kernel Mode Settings
+
+        A component of the Direct Rendering Manager (DRM) that moves
+        responsibility for display mode setting (such as resolution and color
+        depth) from user space to the kernel, improving system stability and
+        reducing flickering during mode changes.
+
+    \item FB - Frame Buffer
+
+        A portion of RAM containing a bitmap that drives a video display; in
+        Linux, the framebuffer device provides a simple interface to graphics
+        hardware, allowing applications to write directly to the display
+        buffer.
+\end{itemize}
+
+\subsection{Display Stack}
+
+\subsection{Kernel Debugging}
+
+\begin{verbatim}
+ls /sys/class/drm/card0-HDMI-A-1
+\end{verbatim}
+
+\begin{verbatim}
+ls /sys/kernel/debug/dri/0
+\end{verbatim}
+
+\begin{verbatim}
+echo 0x1ff > /sys/module/drm/parameters/debug
+\end{verbatim}
+
+\subsection{GPU - Acronyms}
+
+\begin{itemize}
+    \item OpenGL - Open Graphics Library
+
+        A cross-platform API for rendering 2D and 3D vector graphics,
+        facilitating hardware-accelerated rendering by interfacing with the GPU.
+
+    \item GLSL - OpenGL Shading Language
+
+        A high-level shading language with C-like syntax, enabling developers to
+        write shaders for programmable stages of the graphics pipeline, such as
+        vertex and fragment shaders
+
+    \item EGL - Native Platform Graphics Interface API
+
+        Provides an interface between OpenGL and the native windowing system
+        for managing rendering surfaces.
+\end{itemize}
+
+In the Direct Rendering Manager (DRM) framework, only one application can hold
+the DRM master status at a time, granting it exclusive control over display
+resources.
+
+Traditional toolkits and applications often lack direct support for Kernel Mode
+Setting (KMS), making it challenging for multiple applications to manage display
+outputs concurrently.
+
+To address this limitation, a window compositor, such as Wayland, is employed.
+The compositor acts as the sole DRM master, managing access to display resources
+and facilitating the coordination of multiple applications' rendering requests.
+
+This architecture enables a more efficient and secure management of graphical
+resources, allowing applications to render content without requiring direct
+control over the display hardware.
+
+\newpage
+\printbibliography
+\end{document}

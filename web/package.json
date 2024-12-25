@@ -1,11 +1,11 @@
 {
-  "name": "maths",
+  "name": "docsvault",
   "private": true,
   "version": "0.0.2",
-  "homepage": "https://github.com/mnerv/maths",
+  "homepage": "https://github.com/mnerv/notes",
   "repository": {
     "type": "github",
-    "url": "https://github.com/mnerv/maths"
+    "url": "https://github.com/mnerv/notes"
   },
   "type": "module",
   "scripts": {

@@ -31,13 +31,13 @@
 </script>
 
 <main class="p-4 pb-32 md:w-[512pt] mx-auto md:items-center">
-  <h1 class="text-3xl font-bold mb-5">Notes</h1>
+  <h1 class="text-3xl font-bold mb-5">docs <span class="dark:text-zinc-700 text-zinc-300">vault</span></h1>
   <div class="rounded-md overflow-hidden dark:bg-zinc-800 bg-zinc-100 w-full">
     {#each trees as tree}
       <FileTree {tree} />
     {/each}
   </div>
-  <div class="py-4 px-3 dark:text-gray-400 text-gray-500 flex space-x-2 my-auto">
+  <div class="py-4 px-3 dark:text-zinc-600 text-zinc-400 flex space-x-2 my-auto">
     <Icon icon="bi:filetype-pdf" class="my-auto text-base"/>
     <p class="text-sm my-auto">
       {registry.length}

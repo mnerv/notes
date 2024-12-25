@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{spalign}
+\usepackage{xfrac}
+\usepackage{parskip}
+\usepackage{float}  % figure[H]
+\usepackage[english]{babel}
+\usepackage[style=ieee,backend=biber,urldate=iso,date=iso]{biblatex}
+\usepackage[breaklinks=true,bookmarks=true,hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{subcaption}
+\usepackage[yyyymmdd]{datetime}
+\usepackage{url}
+\usetikzlibrary {arrows.meta}
+\pgfplotsset{compat=newest,compat/show suggested version=false}
+
+% Custom shape
+\makeatletter
+\pgfdeclareshape{dflowpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    % Add more custom anchors if needed
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.85pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfhighpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{dfbandpass}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{1pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantizer}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+    \backgroundpath{
+        % Draw the switch shape (rectangle with diagonal lines)
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{quantamp}{
+    \inheritsavedanchors[from=op amp]
+    \inheritanchorborder[from=op amp]
+    \inheritanchor[from=op amp]{center}
+    \inheritanchor[from=op amp]{+}
+    \inheritanchor[from=op amp]{-}
+    \inheritanchor[from=op amp]{out}
+    \inheritanchor[from=op amp]{up}
+    \inheritanchor[from=op amp]{down}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+        \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
+        \pgfpathclose
+        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
+        \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
+        \pgfusepath{draw}
+    }
+}
+\pgfdeclareshape{decimation}{
+    \inheritsavedanchors[from=rectangle]
+    \inheritanchorborder[from=rectangle]
+    \inheritanchor[from=rectangle]{center}
+    \anchor{left}{\pgfpoint{-0.5cm}{0.0cm}}
+    \anchor{right}{\pgfpoint{0.5cm}{0.0cm}}
+    \anchor{top}{\pgfpoint{0.0cm}{0.5cm}}
+    \anchor{bot}{\pgfpoint{0.0cm}{-0.5cm}}
+    \backgroundpath{
+        \pgfsetlinewidth{0.8pt}
+        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+        \pgfpathmoveto{\pgfpoint{-0.25cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathmoveto{\pgfpoint{-0.30cm}{-0.185cm}}
+        \pgfpathlineto{\pgfpoint{-0.25cm}{-0.25cm}}
+        \pgfpathlineto{\pgfpoint{-0.20cm}{-0.185cm}}
+        \pgfusepath{draw}
+    }
+}
+\makeatother
+
+\geometry{
+    a4paper,
+    hmargin=2.54cm,
+    tmargin=1.27cm,
+    bmargin=1.27cm,
+    includeheadfoot
+}
+\setcounter{secnumdepth}{0}  % Disable section numbering
+
+\begin{filecontents}{vcodec.bib}
+@misc{wiki:mjpeg,
+  author = "{Wikipedia contributors}",
+  title = "Motion JPEG --- {Wikipedia}{,} The Free Encyclopedia",
+  year = "2024",
+  howpublished = "\url{https://en.wikipedia.org/w/index.php?title=Motion_JPEG&oldid=1259055254}",
+  note = "[Online; accessed 20-December-2024]"
+}
+@misc{wiki:prores,
+  author = "{Wikipedia contributors}",
+  title = "Apple ProRes --- {Wikipedia}{,} The Free Encyclopedia",
+  year = "2024",
+  howpublished = "\url{https://en.wikipedia.org/w/index.php?title=Apple_ProRes&oldid=1248322314}",
+  note = "[Online; accessed 20-December-2024]"
+}
+@misc{wiki:h264,
+  author = "{Wikipedia contributors}",
+  title = "Advanced Video Coding --- {Wikipedia}{,} The Free Encyclopedia",
+  year = "2024",
+  howpublished = "\url{https://en.wikipedia.org/w/index.php?title=Advanced_Video_Coding&oldid=1251662394}",
+  note = "[Online; accessed 20-December-2024]"
+}
+@misc{wiki:h265,
+  author = "{Wikipedia contributors}",
+  title = "High Efficiency Video Coding --- {Wikipedia}{,} The Free Encyclopedia",
+  year = "2024",
+  howpublished = "\url{https://en.wikipedia.org/w/index.php?title=High_Efficiency_Video_Coding&oldid=1258600452}",
+  note = "[Online; accessed 20-December-2024]"
+}
+@misc{wiki:av1,
+  author = "{Wikipedia contributors}",
+  title = "AV1 --- {Wikipedia}{,} The Free Encyclopedia",
+  year = "2024",
+  howpublished = "\url{https://en.wikipedia.org/w/index.php?title=AV1&oldid=1261928987}",
+  note = "[Online; accessed 20-December-2024]"
+}
+@misc{av1:tech,
+  title={A Technical Overview of AV1},
+  author={Jingning Han and Bohan Li and Debargha Mukherjee and Ching-Han Chiang and Adrian Grange and Cheng Chen and Hui Su and Sarah Parker and Sai Deng and Urvang Joshi and Yue Chen and Yunqing Wang and Paul Wilkins and Yaowu Xu and James Bankoski},
+  year={2021},
+  eprint={2008.06091},
+  archivePrefix={arXiv},
+  primaryClass={eess.IV},
+  url={https://arxiv.org/abs/2008.06091},
+}
+\end{filecontents}
+\addbibresource{vcodec.bib}
+
+\begin{document}
+\section{Group Theory}
+
+Hamiltonians
+
+p-adics
+
+Finite Fields
+
+Unified Theory
+
+Groups:
+
+Permutations of Roots of Polynomials
+
+Number Theory
+
+Geometry
+
+Physics
+
+Crypto(graphy)
+
+What is a group?
+
+Collection of elements, can be whatever.
+
+Needs to satisfy these for axiums
+
+Closure
+
+\begin{equation}
+    a \circ b = c
+\end{equation}
+
+Associativity
+
+\begin{equation}
+    (a \circ b) \circ c = a \circ (b \circ c)
+\end{equation}
+
+Neutral
+
+\begin{equation}
+    a \circ e = a = e \circ a
+\end{equation}
+
+Inverse
+
+\begin{equation}
+    a \circ a^{-1} = e
+\end{equation}
+
+hello
+
+\newpage
+\printbibliography
+\end{document}
+
