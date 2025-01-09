@@ -1,0 +1,68 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{spalign}
+\usepackage{xfrac}
+\usepackage{parskip}
+\usepackage{float}  % figure[H]
+\usepackage[style=ieee,backend=biber]{biblatex}
+\usepackage[breaklinks=true,bookmarks=true,hidelinks]{hyperref}
+\usepackage{tikz}
+
+\geometry{
+    a4paper,
+    hmargin=2.54cm,
+    tmargin=1.27cm,
+    bmargin=1.27cm,
+    includeheadfoot
+}
+\setcounter{secnumdepth}{0}  % Disable section numbering
+
+\begin{document}
+
+\section{1.a Beräkna integralen}
+
+\[
+    \int_0^3 x \cdot \sqrt{16 + x^2} dx
+\]
+
+Lösning:
+
+\textbf{Variabelbyte (p.284)}
+
+\begin{align}
+    \int_0^3 x \cdot \sqrt{16 + x^2} dx &= \left[\begin{aligned}
+            t &= 16 + x^2 \\
+            \frac{dt}{dx} &= 2x \ \Leftrightarrow \ \frac{1}{2}dt = x
+        \end{aligned}\right] \\
+        &= \int_{a}^{b} \frac{1}{2}\sqrt{t}\ dt \\
+        &= \frac{1}{2} \int_{a}^{b}\sqrt{t}\ dt \\
+        &= \frac{1}{2} \left[\frac{2}{3}t^{\frac{3}{2}}\right]_{a}^{b}
+            = \frac{1}{3} \left[t^{\frac{3}{2}}\right]_{a}^{b} \\
+        &= \frac{1}{3} \left[\left(16 + x^2\right)^{\frac{3}{2}}\right]_{0}^{3} \\
+        &= \frac{1}{3} \left(\left(16 + 3^2\right)^{\frac{3}{2}} - \left(16 + 0^2\right)^{\frac{3}{2}}\right) \\
+        &= \frac{1}{3} \left((16 + 9)^{\frac{3}{2}} - 16^{\frac{3}{2}}\right) \\
+        &= \frac{1}{3} \left((25 \cdot 5) - (16 \cdot 4)\right) \\
+        &= \frac{1}{3} (125 - 64) \\
+        &= \frac{1}{3} 61 \\
+\end{align}
+
+%             \item Beräkna integralen
+%
+%             \[
+%                 \int_0^3 \frac{1}{\sqrt{x^2 + 4}} dx
+%             \]
+%
+%             \item Avgör om den generaliserade integralen
+%                   $\displaystyle \int_0^\infty e^{-x} dx$ är konvergent och
+%                   beräkna den i så fall.
+%
+%         \end{enumerate}
+% \end{enumerate}
+
+\end{document}
+
