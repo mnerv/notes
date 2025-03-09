@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}     % Fix weird character
+\usepackage[T1]{fontenc}   % Fix weird character
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -24,113 +24,113 @@
 % Custom shape
 \makeatletter
 \pgfdeclareshape{dflowpass}{
-    \inheritsavedanchors[from=rectangle]
-    \inheritanchorborder[from=rectangle]
-    \inheritanchor[from=rectangle]{center}
-    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
-    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
-    % Add more custom anchors if needed
-    \backgroundpath{
-        % Draw the switch shape (rectangle with diagonal lines)
-        \pgfsetlinewidth{0.85pt}
-        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
-        \pgfpathmoveto{\pgfpoint{-0.35cm}{0.125cm}}
-        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
-        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
-        \pgfusepath{draw}
-    }
+  \inheritsavedanchors[from=rectangle]
+  \inheritanchorborder[from=rectangle]
+  \inheritanchor[from=rectangle]{center}
+  \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+  \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+  % Add more custom anchors if needed
+  \backgroundpath{
+    % Draw the switch shape (rectangle with diagonal lines)
+    \pgfsetlinewidth{0.85pt}
+    \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+    \pgfpathmoveto{\pgfpoint{-0.35cm}{0.125cm}}
+    \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+    \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+    \pgfusepath{draw}
+  }
 }
 \pgfdeclareshape{dfhighpass}{
-    \inheritsavedanchors[from=rectangle]
-    \inheritanchorborder[from=rectangle]
-    \inheritanchor[from=rectangle]{center}
-    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
-    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
-    \backgroundpath{
-        % Draw the switch shape (rectangle with diagonal lines)
-        \pgfsetlinewidth{1pt}
-        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
-        \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
-        \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
-        \pgfpathlineto{\pgfpoint{-0.35cm}{-0.2cm}}
-        \pgfusepath{draw}
-    }
+  \inheritsavedanchors[from=rectangle]
+  \inheritanchorborder[from=rectangle]
+  \inheritanchor[from=rectangle]{center}
+  \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+  \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+  \backgroundpath{
+    % Draw the switch shape (rectangle with diagonal lines)
+    \pgfsetlinewidth{1pt}
+    \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+    \pgfpathmoveto{\pgfpoint{0.35cm}{0.125cm}}
+    \pgfpathlineto{\pgfpoint{-0.15cm}{0.125cm}}
+    \pgfpathlineto{\pgfpoint{-0.35cm}{-0.2cm}}
+    \pgfusepath{draw}
+  }
 }
 \pgfdeclareshape{dfbandpass}{
-    \inheritsavedanchors[from=rectangle]
-    \inheritanchorborder[from=rectangle]
-    \inheritanchor[from=rectangle]{center}
-    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
-    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
-    \backgroundpath{
-        % Draw the switch shape (rectangle with diagonal lines)
-        \pgfsetlinewidth{1pt}
-        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
-        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
-        \pgfpathlineto{\pgfpoint{-0.20cm}{0.125cm}}
-        \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
-        \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
-        \pgfusepath{draw}
-    }
+  \inheritsavedanchors[from=rectangle]
+  \inheritanchorborder[from=rectangle]
+  \inheritanchor[from=rectangle]{center}
+  \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+  \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+  \backgroundpath{
+    % Draw the switch shape (rectangle with diagonal lines)
+    \pgfsetlinewidth{1pt}
+    \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+    \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+    \pgfpathlineto{\pgfpoint{-0.20cm}{0.125cm}}
+    \pgfpathlineto{\pgfpoint{0.15cm}{0.125cm}}
+    \pgfpathlineto{\pgfpoint{0.35cm}{-0.2cm}}
+    \pgfusepath{draw}
+  }
 }
 \pgfdeclareshape{quantizer}{
-    \inheritsavedanchors[from=rectangle]
-    \inheritanchorborder[from=rectangle]
-    \inheritanchor[from=rectangle]{center}
-    \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
-    \anchor{right}{\pgfpoint{0.5cm}{0cm}}
-    \backgroundpath{
-        % Draw the switch shape (rectangle with diagonal lines)
-        \pgfsetlinewidth{0.8pt}
-        \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
-        \pgfpathmoveto{\pgfpoint{-0.25cm}{-0.25cm}}
-        \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
-        \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
-        \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
-        \pgfusepath{draw}
-    }
+  \inheritsavedanchors[from=rectangle]
+  \inheritanchorborder[from=rectangle]
+  \inheritanchor[from=rectangle]{center}
+  \anchor{left}{\pgfpoint{-0.5cm}{0cm}}
+  \anchor{right}{\pgfpoint{0.5cm}{0cm}}
+  \backgroundpath{
+    % Draw the switch shape (rectangle with diagonal lines)
+    \pgfsetlinewidth{0.8pt}
+    \pgfpathrectanglecorners{\pgfpoint{-0.5cm}{-0.5cm}}{\pgfpoint{0.5cm}{0.5cm}}
+    \pgfpathmoveto{\pgfpoint{-0.25cm}{-0.25cm}}
+    \pgfpathlineto{\pgfpoint{0cm}{-0.25cm}}
+    \pgfpathlineto{\pgfpoint{0cm}{0.25cm}}
+    \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+    \pgfusepath{draw}
+  }
 }
 \pgfdeclareshape{quantamp}{
-    \inheritsavedanchors[from=op amp]
-    \inheritanchorborder[from=op amp]
-    \inheritanchor[from=op amp]{center}
-    \inheritanchor[from=op amp]{+}
-    \inheritanchor[from=op amp]{-}
-    \inheritanchor[from=op amp]{out}
-    \inheritanchor[from=op amp]{up}
-    \inheritanchor[from=op amp]{down}
-    \backgroundpath{
-        \pgfsetlinewidth{0.8pt}
-        \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
-        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
-        \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
-        \pgfpathclose
-        \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
-        \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
-        \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
-        \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
-        \pgfusepath{draw}
-    }
+  \inheritsavedanchors[from=op amp]
+  \inheritanchorborder[from=op amp]
+  \inheritanchor[from=op amp]{center}
+  \inheritanchor[from=op amp]{+}
+  \inheritanchor[from=op amp]{-}
+  \inheritanchor[from=op amp]{out}
+  \inheritanchor[from=op amp]{up}
+  \inheritanchor[from=op amp]{down}
+  \backgroundpath{
+    \pgfsetlinewidth{0.8pt}
+    \pgfpathmoveto{\pgfpoint{-0.5cm}{0.55cm}}
+    \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+    \pgfpathlineto{\pgfpoint{-0.5cm}{-0.55cm}}
+    \pgfpathclose
+    \pgfpathmoveto{\pgfpoint{-0.35cm}{-0.2cm}}
+    \pgfpathlineto{\pgfpoint{-0.2cm}{-0.2cm}}
+    \pgfpathlineto{\pgfpoint{-0.2cm}{0.2cm}}
+    \pgfpathlineto{\pgfpoint{-0.05cm}{0.2cm}}
+    \pgfusepath{draw}
+  }
 }
 \makeatother
 
 \geometry{
-    a4paper,
-    hmargin=2.54cm,
-    tmargin=1.27cm,
-    bmargin=1.27cm,
-    includeheadfoot
+  a4paper,
+  hmargin=2.54cm,
+  tmargin=1.27cm,
+  bmargin=1.27cm,
+  includeheadfoot
 }
 \setcounter{secnumdepth}{0}  % Disable section numbering
 
 \begin{filecontents}{dsp.bib}
 @book{mcclellan2015dsp,
-  title     = {DSP First},
-  author    = {James H. McClellan and Ronald W. Schafer and Mark A. Yoder},
-  year      = {2015},
+  title   = {DSP First},
+  author  = {James H. McClellan and Ronald W. Schafer and Mark A. Yoder},
+  year  = {2015},
   edition   = {Second, Global},
   publisher = {Pearson},
-  isbn      = {9780136019251}
+  isbn  = {9780136019251}
 }
 \end{filecontents}
 \addbibresource{dsp.bib}
@@ -161,7 +161,7 @@ One-dimensional continuous-time system takes an input signal x(t) and produces
 a corresponding output signal y(t). This can be represented mathematically by
 
 \begin{equation}
-    y(t) = T\{x(t)\}
+  y(t) = T\{x(t)\}
 \end{equation}
 
 which means that the input signal (waveform, image, etc.) is operated on by the
@@ -170,24 +170,25 @@ a system such that the output signal is the square of the input signal. The
 mathematical description of this system is
 
 \begin{equation}
-    y(t) = [x(t)]^2
+  y(t) = [x(t)]^2
 \end{equation}
 
-The system is a \textit{continuous-time system} (i.e., a system whose input and output
-are continuous-time signals). The discrete version where the signal are quantised is
+The system is a \textit{continuous-time system} (i.e., a system whose input and
+output are continuous-time signals). The discrete version where the signal are
+quantised is
 
 \begin{equation}
-    y[t] = (x[t])^2
+  y[t] = (x[t])^2
 \end{equation}
 
 The implementation of the discrete- time squarer system would be trivial given
 a digital computer; one simply multiplies each discrete signal value by itself.
 
 In thinking and writing about systems, it is often useful to have a visual
-representation of the system. For this purpose, engineers use \textit{block diagrams}
-to represent operations performed in an implementation of a system and to show
-the interrelations among the many signals that may exist in an implementation of
-a complex system.
+representation of the system. For this purpose, engineers use
+\textit{block diagrams} to represent operations performed in an implementation
+of a system and to show the interrelations among the many signals that may exist
+in an implementation of a complex system.
 
 \subsection{Sinusoids}
 
@@ -199,7 +200,7 @@ sinusoids. Sinusoidal signals are the basic building blocks in the theory of
 signals and systems.
 
 \begin{equation}
-x(t) = A \cos (\omega_0 t + \varphi)
+  x(t) = A \cos (\omega_0 t + \varphi)
 \end{equation}
 
 We define a continuous-time signal with independent variable $t$, a continuous
@@ -244,7 +245,7 @@ continuous-time signal $x(t)$ and a corresponding discrete-time signal $x[n]$.
 Sample continuous-time signal at equally spaced time instants, $t_n = nT_s$:
 
 \begin{equation}
-    x[n] = x(nT_s), \qquad -\infty < n < \infty
+  x[n] = x(nT_s), \qquad -\infty < n < \infty
 \end{equation}
 
 where $x(t)$ represents any continuously varying signal such as audio. The fixed
@@ -252,13 +253,13 @@ time interval between samples, $T_s$, can also be expressed as a fixed
 \emph{sampling rate}, $f_s$ in samples/s:
 
 \begin{equation}
-    f_s = \frac{1}{T_s} \quad \mathrm{samples/s}
+  f_s = \frac{1}{T_s} \quad \mathrm{samples/s}
 \end{equation}
 
 Therefore, an alternative way to write the sequence is:
 
 \begin{equation}
-    x[n] = x\left(\frac{n}{f_s}\right)
+  x[n] = x\left(\frac{n}{f_s}\right)
 \end{equation}
 
 \subsubsection{Sampling Sinusoidal Signals}
@@ -266,9 +267,9 @@ Therefore, an alternative way to write the sequence is:
 Sample $A \cos (\omega t + \varphi)$:
 
 \begin{align}
-x[n] &= x(nT_s) \\
-     &= A \cos (\omega n T_s + \varphi) \\
-     &= A \cos (\hat{\omega} n + \varphi)
+  x[n] &= x(nT_s) \\
+       &= A \cos (\omega n T_s + \varphi) \\
+       &= A \cos (\hat{\omega} n + \varphi)
 \end{align}
 
 where $\hat{\omega}$ is defined as:
@@ -294,13 +295,14 @@ that formula can act as a name for the signal.
 \subsubsection{Shannon Sampling Theorem}
 
 \begin{quote}
-A continuous-time signal $x(t)$ with frequencies no higher than
-$f_{\mathrm{max}}$ can be reconstructed exactly from its samples
-$x[n] = x(nT_s)$, if the samples are taken at a rate $f_s = \frac{1}{T_s}$ that
-is greater than $2f_{\mathrm{max}}$.
+  A continuous-time signal $x(t)$ with frequencies no higher than
+  $f_{\mathrm{max}}$ can be reconstructed exactly from its samples
+  $x[n] = x(nT_s)$, if the samples are taken at a rate $f_s = \frac{1}{T_s}$
+  that is greater than $2f_{\mathrm{max}}$.
 \end{quote}
 
-The minimum sampling rate of $2f_{\mathrm{max}}$ is called the Nyquist rate (Nyquist limit).
+The minimum sampling rate of $2f_{\mathrm{max}}$ is called the Nyquist rate
+(Nyquist limit).
 
 \subsection{FIR Filters}
 
@@ -330,7 +332,8 @@ response of an LTI system by giving the magnitude and phase change experienced
 by all possible sinusoids.
 
 \begin{equation}
-    H(e^{j\hat{\omega}}) = \sum_{k = 0}^{M} b_k e^{-j \hat{\omega} k} = \sum_{k = 0}^{M} h[k] e^{-j \hat{\omega} k}
+  H(e^{j\hat{\omega}}) = \sum_{k = 0}^{M} b_k e^{-j \hat{\omega} k}
+                       = \sum_{k = 0}^{M} h[k] e^{-j \hat{\omega} k}
 \end{equation}
 
 \subsection{Discrete-Time Fourier Transform}
@@ -339,7 +342,7 @@ General concept of the discrete-time Fourier transform (DTFT) to the impulse
 response of the LTI(\emph{Linear-Time Invariant}) system.
 
 \begin{equation}
-    X(e^{j\hat{\omega}}) = \sum_{n = -\infty}^{\infty} x[n]e^{-j\hat{\omega}n}
+  X(e^{j\hat{\omega}}) = \sum_{n = -\infty}^{\infty} x[n]e^{-j\hat{\omega}n}
 \end{equation}
 
 \subsubsection{Discrete Fourier Transform (DFT)}
@@ -349,11 +352,11 @@ discrete Fourier transform (or DFT) that results from taking frequency samples
 of the DTFT.
 
 \begin{equation}
-    X[k] = \sum_{n=0}^{N - 1} x[n] e^{-j(2\pi / N)kn}
+  X[k] = \sum_{n=0}^{N - 1} x[n] e^{-j(2\pi / N)kn}
 \end{equation}
 
 \begin{equation}
-    k = 0,\, 1,\, \dots,\, N - 1
+  k = 0,\, 1,\, \dots,\, N - 1
 \end{equation}
 
 The \emph{Discrete Fourier Transform (DFT)} takes $N$ samples in the time domain
@@ -375,16 +378,17 @@ For a finite-length signal $x[n]$ with a set of signal values
 $\{x[0], x[1],\ \dots,\ x[L - 1]\}$, the signal can be expressed as:
 
 \begin{equation}
-    x[n] = \sum_{k = 0}^{L - 1} x[k] \delta[n - k]
+  x[n] = \sum_{k = 0}^{L - 1} x[k] \delta[n - k]
 \end{equation}
 
 Each term in the summation, $x[k] \delta[n - k]$, represents the value $x[k]$ at
-the time index $n = k$, which is the only index where $\delta[n - k]$ is nonzero. 
+the time index $n = k$, which is the only index where $\delta[n - k]$ is
+nonzero.
 
 The $z$-transform of the signal $x[n]$ is defined by the formula:
 
 \begin{equation}
-    X(z) = \sum_{k = 0}^{L - 1} x[k]z^{-k}
+  X(z) = \sum_{k = 0}^{L - 1} x[k]z^{-k}
 \end{equation}
 
 Here, $z$, the independent variable of the $z$-transform $X(z)$, is a complex
@@ -397,7 +401,7 @@ Although this is the conventional definition of the $z$-transform, it is
 instructive to write $X(z)$ in the form:
 
 \begin{equation}
-    X(z) = \sum_{k = 0}^{L - 1} x[k](z^{-1})^{k}
+  X(z) = \sum_{k = 0}^{L - 1} x[k](z^{-1})^{k}
 \end{equation}
 
 This emphasizes that $X(z)$ is simply a polynomial of degree $L - 1$ in the
@@ -409,8 +413,24 @@ The second way to obtain a $z$-domain representation of an FIR filter is to take
 the $z$-transform of the impulse response:
 
 \begin{equation}
-    H(z) = \sum_{k = 0}^{M} h[k]z^{-k}
+  H(z) = \sum_{k = 0}^{M} h[k]z^{-k}
 \end{equation}
+
+\subsection{IIR Filters}
+
+FIR filters is not the most general class of LIT systems. The output of $y[n]$
+is formed solely from a finite set of samples of the input signal $x[n]$.
+
+The definition equation for this wider class of digital filters is the following
+general difference equation.
+
+\begin{equation}
+  y[n] = \sum_{l = 1}^{N}a_ly[n - l] + \sum_{k = 0}^{M}b_kx[n - k]
+\end{equation}
+
+Set of two filter coefficients ${b_k}$ and $a_l$ are constants. The coefficients
+${a_l}$ are called \textit{feedback} coefficients, and the ${b_k}$ are the
+\textit{feed-forward} coefficients.
 
 \newpage
 \printbibliography
