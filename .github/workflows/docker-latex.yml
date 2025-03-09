@@ -57,7 +57,7 @@ jobs:
         docker run --rm -v "$(pwd):/app" --name maths --user root --hostname latex latex sh ./deploy.sh --parallel --production --dist-dir="web/dist" --cache-uri="https://notes.nrv.nu/pdf/archive.tar.gz"
 
     - name: Upload site artifact
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         path: "web/dist${{ steps.pages.outputs.base_path }}"
 
