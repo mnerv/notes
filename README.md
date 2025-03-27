@@ -1,6 +1,6 @@
 # Notes
 
-Alpine container with LaTeX and neovim installation.
+LaTeX first class notes collection.
 
 ## Build
 
@@ -39,7 +39,7 @@ Activate it by using the script inside the .venv `directory`.
 Install packages from the `requirements.txt`
 
 ```sh
-pip install -r ./requirements.txt 
+pip install -r requirements.txt
 ```
 
 ## Resources

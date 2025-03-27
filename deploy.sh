@@ -3,15 +3,12 @@
 # Configs
 registry_name="registry"
 registry_path=""
-registry_cache_path=""
 build_dir="build"
 dist_dir="dist"
 cache_uri=""
 root_dir=$(pwd)
 
 # State flags
-is_cached=false
-# -------------
 is_dry_run=false
 is_clean=false
 is_parallel=false
@@ -20,7 +17,7 @@ is_skip_load_cache=false
 
 help() {
   cat << EOF
-usage: $arg0 [options]
+usage: $0 [options]
 
 options:
     -h, --help          Show this menu.
@@ -40,22 +37,24 @@ EOF
 
 generate_file_index() {
   # Add files
-  printf "" > $registry_path
-  find ./cs | grep .tex >> $registry_path
-  find ./dsp | grep .tex >> $registry_path
-  find ./ee | grep .tex >> $registry_path
-  find ./maths | grep .tex >> $registry_path
-  find ./misc | grep .tex >> $registry_path
+  printf "" > "$registry_path"
+  {
+    find ./cs | grep .tex
+    find ./dsp | grep .tex
+    find ./ee | grep .tex
+    find ./maths | grep .tex
+    find ./misc | grep .tex
+  } >> "$registry_path"
 
   # Filter out dependencies from registry database
-  registry_data=$(cat $registry_path | sort)
+  registry_data=$(sort < "$registry_path")
   input_deps=""
 
   for path in $registry_data
   do
-    input_dep=$(egrep '\\input\{.+\}' $path | sed -e 's/\\input{\(.*\)}/\1/g')
-    if ! [[ -z "$input_dep" ]]; then
-      if ! [[ -z "$input_deps" ]]; then
+    input_dep=$(grep -E '\\input\{.+\}' "$path" | sed -e 's/\\input{\(.*\)}/\1/g')
+    if [ -n "$input_dep" ]; then
+      if [ -n "$input_deps" ]; then
         input_deps="$input_deps\n$input_dep"
       else
         input_deps="$input_dep"
@@ -63,19 +62,19 @@ generate_file_index() {
     fi
   done
 
-  input_deps=$(printf "$input_deps\n" | sort -u)
+  input_deps=$(printf "%s\n" "$input_deps" | sort -u)
   for path in $input_deps
   do
     # FIXME: Can't handle relative path ./
-    esc_path=$(printf "$path\n" | sed -r 's/\//\\\//')
-    registry_data=$(printf "$registry_data\n" | sed -r "s/^.*$esc_path//")
+    esc_path=$(printf "%s\n" "$path" | sed -r 's/\//\\\//')
+    registry_data=$(printf "%s\n" "$registry_data" | sed -r "s/^.*$esc_path//")
   done
 
-  printf "$registry_data\n" | sort -u | sed -r '/^\s*$/d' > $registry_path
+  printf "%s\n" "$registry_data" | sort -u | sed -r '/^\s*$/d' > "$registry_path"
 }
 
 parse_args() {
-  while [[ $# -gt 0 ]]; do
+  while [ $# -gt 0 ]; do
     key="$1"
     case $key in
       --help | -h)
@@ -107,7 +106,7 @@ parse_args() {
         is_skip_load_cache=true
         ;;
       *)
-        printf "Unsupported argument: $key\n"
+        printf "Unsupported argument: %s\n" "$key"
         exit 1
       ;;
     esac
@@ -117,86 +116,85 @@ parse_args() {
 
 prebuild() {
   # clean
-  if [[ $is_clean = true ]] && [[ -e "$build_dir" ]]; then
-    rm -rf $build_dir
+  if [ $is_clean = true ] && [ -e "$build_dir" ]; then
+    rm -rf "$build_dir"
   fi
-  if [[ $is_clean = true ]] && [[ $is_production = true ]] && [[ -e "$dist_dir/pdf" ]]; then
+  if [ $is_clean = true ] && [ $is_production = true ] && [ -e "$dist_dir/pdf" ]; then
     rm -rf "$dist_dir/pdf"
   fi
 
   # create path
-  if ! [[ -e $build_dir ]]; then
-    mkdir -p $build_dir
+  if ! [ -e "$build_dir" ]; then
+    mkdir -p "$build_dir"
   fi
 
   # construct path strings
   registry_path="$build_dir/$registry_name.txt"
-  registry_cache_path="$build_dir/$registry_name.cache.txt"
 
   # check for cache
-  if [[ $is_skip_load_cache = true ]]; then
+  if [ $is_skip_load_cache = true ]; then
     return 0
   fi
 
-  if ! [[ -z $cache_uri ]]; then
-    cd $build_dir
-    wget $cache_uri
-    cd $root_dir
+  if [ -n "$cache_uri" ]; then
+    cd "$build_dir" || exit 1
+    wget "$cache_uri"
+    cd "$root_dir" || exit 1
   fi
 
   # BUG: Removed LaTeX file won't be updated.
   # BUG: On Windows docker, the expanded archive can't be renamed, permission
   #      denied.
-  if [[ -e "$build_dir/archive.tar.gz" ]]; then
-    cd $build_dir
+  if [ -e "$build_dir/archive.tar.gz" ]; then
+    cd "$build_dir" || exit 1
     tar -xzf "./archive.tar.gz"
-    cd $root_dir
+    cd "$root_dir" || exit 1
   fi
 }
 
 build() {
-  if ! [[ -e "$registry_path" ]]; then
+  if ! [ -e "$registry_path" ]; then
     printf "No registry file\n"
     exit 1
   fi
 
-  files=$(cat $registry_path)
+  files=$(cat "$registry_path")
   args="--build-dir=$build_dir"
 
-  if [[ $is_dry_run = true ]]; then
+  if [ $is_dry_run = true ]; then
     for file in $files; do
       echo "./compile.sh $args $file"
     done
     return 0
   fi
 
-  if [[ $is_parallel = true ]]; then
-     parallel --will-cite sh ./compile.sh $args ::: $files
+  if [ $is_parallel = true ]; then
+     parallel --will-cite sh ./compile.sh "$args" ::: "$files"
   else
     for file in $files; do
-      sh ./compile.sh $args $file
+      sh ./compile.sh "$args" "$file"
     done
   fi
 }
 
 postbuild() {
-  cd $build_dir
+  cd "$build_dir" || exit 1
   tar -czf archive.tar.gz pdf
-  cd $root_dir
+  cd "$root_dir" || exit 1
 
-  if [[ $is_production = false ]]; then
+  if [ $is_production = false ]; then
     return
   fi
 
-  if ! [[ -e "$dist_dir" ]]; then
+  if ! [ -e "$dist_dir" ]; then
     mkdir -p "$dist_dir"
   fi
 
-  if [[ -e "$dist_dir/pdf" ]]; then
+  if [ -e "$dist_dir/pdf" ]; then
     rm -rf "$dist_dir/pdf"
   fi
 
-  if [[ -e "web/dist" ]]; then
+  if [ -e "web/dist" ]; then
     cp -rf web/dist/* dist
   fi
 
@@ -205,7 +203,7 @@ postbuild() {
   cp "$build_dir/archive.tar.gz" "$dist_dir/pdf"
 }
 
-parse_args $@
+parse_args "$@"
 prebuild
 generate_file_index
 build
